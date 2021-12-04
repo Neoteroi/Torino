@@ -1,0 +1,17 @@
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "../infrastructure"
+        },
+        {
+            "path": "../docs"
+        },
+        {
+            "path": "../.github"
+        }
+    ],
+    "settings": {}
+}

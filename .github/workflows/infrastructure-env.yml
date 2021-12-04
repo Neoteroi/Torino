@@ -1,0 +1,49 @@
+on:
+  workflow_call:
+    inputs:
+      PROJECT_NAME:
+        required: true
+        type: string
+      ENV_NAME:
+        required: true
+        type: string
+      AZURE_SUBSCRIPTION:
+        required: true
+        type: string
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+      DBSA_PASSWORD:
+        required: true
+
+jobs:
+  deploy-environment-infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - uses: Azure/CLI@v1
+        with:
+          inlineScript: |
+            #!/bin/bash
+            RG="${{ inputs.ENV_NAME }}-${{ inputs.PROJECT_NAME }}-rg"
+            if $(az group exists --name $RG) ; then
+              echo "Azure resource group already exists, skipping creation..."
+            else
+              az group create --name $RG --location ${{ env.RG_LOCATION }}
+              echo "Azure resource group created"
+            fi
+
+      - name: Run ARM deploy
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ inputs.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ inputs.ENV_NAME }}-${{ inputs.PROJECT_NAME }}-rg
+          template: ./infrastructure/template.bicep
+          parameters: ./infrastructure/parameters.${{ inputs.ENV_NAME }}.json projectName=${{ inputs.PROJECT_NAME }} dbAdministratorLoginPassword=${{ env.DB_PASS }}
+        env:
+          DB_PASS: ${{ secrets.DBSA_PASSWORD }}

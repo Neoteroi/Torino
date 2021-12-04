@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appClientId": {
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    "environment": {
+      "value": "test"
+    },
+    "appServicePlanSku": {
+      "value": "S0"
+    },
+    "databaseSkuCapacity": {
+      "value": 1
+    },
+    "databaseSkuName": {
+      "value": "B_Gen5_1"
+    },
+    "databaseSkuSizeMB": {
+      "value": "51200"
+    },
+    "databaseSkuTier": {
+      "value": "Basic"
+    }
+  }
+}

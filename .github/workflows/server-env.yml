@@ -1,0 +1,70 @@
+on:
+  workflow_call:
+    inputs:
+      PROJECT_NAME:
+        required: true
+        type: string
+      ENV_NAME:
+        required: true
+        type: string
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
+      DBSA_PASSWORD:
+        required: true
+
+jobs:
+  deploy-environment-webapp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 9
+          submodules: false
+
+      - uses: actions/cache@v1
+        id: depcache
+        with:
+          path: deps
+          key: requirements-pip-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
+
+      - name: Download dependencies
+        if: steps.depcache.outputs.cache-hit != 'true'
+        working-directory: server
+        run: |
+          pip download --dest=deps -r requirements.txt
+
+      - name: Install dependencies
+        working-directory: server
+        run: |
+          pip install -U --no-index --find-links=deps deps/*
+
+      - name: Run DB migrations
+        working-directory: server
+        run: |
+          ENV=dev
+          DB_NAME="$ENV-${PROJECT_NAME}pg"
+          DB_MIGCONNSTRING="postgresql+psycopg2://pgsqladmin@$DB_NAME:$DBSA_PASSWORD@$DB_NAME.postgres.database.azure.com:5432/$PROJECT_NAME" alembic upgrade head
+        env:
+          PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+          DBSA_PASSWORD: ${{ secrets.DBSA_PASSWORD }}
+
+      - name: Download a distribution artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: app-package
+
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ inputs.ENV_NAME }}-${{ inputs.PROJECT_NAME }}
+          package: release.zip
+          startup-command: "gunicorn --bind=0.0.0.0 --workers=4 -k uvicorn.workers.UvicornWorker server:app"

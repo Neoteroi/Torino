@@ -1,0 +1,44 @@
+name: Deploy infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_to_dev:
+        description: "Deploy to DEV?"
+        required: true
+        default: "1"
+      deploy_to_test:
+        description: "Deploy to TEST?"
+        required: true
+        default: "0"
+
+env:
+  PROJECT_NAME: trieste
+  RG_LOCATION: westeurope
+
+defaults:
+  run:
+    working-directory: infrastructure
+
+jobs:
+  deploy-dev:
+    if: github.event.inputs.deploy_to_dev == '1' || github.ref == 'refs/heads/dev'
+    uses: Neoteroi/BlackSheep-Azure-API/.github/workflows/infrastructure-env.yml@dev
+    with:
+      PROJECT_NAME: trieste
+      ENV_NAME: dev
+      AZURE_SUBSCRIPTION: 3756d039-9ddf-4efc-9eec-11dec0d9ff59
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.DEV_AZURE_CREDENTIALS }}
+      DBSA_PASSWORD: ${{ secrets.DEV_DBSA_PASSWORD }}
+
+  deploy-test:
+    if: github.event.inputs.deploy_to_test == '1' || github.ref == 'refs/heads/test'
+    uses: Neoteroi/BlackSheep-Azure-API/.github/workflows/infrastructure-env.yml@dev
+    with:
+      PROJECT_NAME: trieste
+      ENV_NAME: test
+      AZURE_SUBSCRIPTION: 3756d039-9ddf-4efc-9eec-11dec0d9ff59
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.TEST_AZURE_CREDENTIALS }}
+      DBSA_PASSWORD: ${{ secrets.TEST_DBSA_PASSWORD }}

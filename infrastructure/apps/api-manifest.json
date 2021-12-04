@@ -1,0 +1,20 @@
+[
+    {
+        "allowedMemberTypes": [
+            "User"
+        ],
+        "description": "Topics administrators can create and update topics.",
+        "displayName": "Topics administrator",
+        "isEnabled": true,
+        "value": "Topics:Admin"
+    },
+    {
+        "allowedMemberTypes": [
+            "User"
+        ],
+        "description": "Regions administrators can create and update regions.",
+        "displayName": "Regions administrator",
+        "isEnabled": true,
+        "value": "Regions:Admin"
+    }
+]

@@ -1,0 +1,94 @@
+name: ServerCICD
+
+on:
+  release:
+    types: [published]
+  push:
+    branches:
+      - dev
+      - test
+      - prod
+    paths:
+      - ".github/workflows/server.yml"
+      - "server/**"
+  pull_request:
+    branches:
+      - "*"
+    paths:
+      - ".github/workflows/server.yml"
+      - "server/**"
+
+env:
+  PROJECT_NAME: trieste
+
+jobs:
+  build-app:
+    runs-on: ubuntu-18.04
+    defaults:
+      run:
+        working-directory: server
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 9
+          submodules: false
+
+      - name: Use Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - uses: actions/cache@v1
+        id: depcache
+        with:
+          path: deps
+          key: requirements-pip-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
+
+      - name: Download dependencies
+        if: steps.depcache.outputs.cache-hit != 'true'
+        run: |
+          pip download --dest=deps -r requirements.txt
+
+      - name: Install dependencies
+        run: |
+          pip install -U --no-index --find-links=deps deps/*
+
+      - name: Run tests
+        run: |
+          pytest tests/
+
+      - name: Archive Release
+        run: |
+          zip -T -r ../release.zip . -x "venv/*" "__pycache__/*" "**/__pycache__/*" ".mypy_cache/*" ".pytest_cache/*" "deps/*" @
+
+      - name: Upload distribution package
+        uses: actions/upload-artifact@master
+        with:
+          name: app-package
+          path: release.zip
+
+  deploy-dev:
+    needs: build-app
+    if: github.ref == 'refs/heads/dev'
+    uses: Neoteroi/BlackSheep-Azure-API/.github/workflows/server-env.yml@dev
+    with:
+      PROJECT_NAME: trieste
+      ENV_NAME: dev
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.DEV_AZURE_CREDENTIALS }}
+      DBSA_PASSWORD: ${{ secrets.DEV_DBSA_PASSWORD }}
+
+  deploy-test:
+    needs: build-app
+    if: github.ref == 'refs/heads/test'
+    uses: Neoteroi/BlackSheep-Azure-API/.github/workflows/server-env.yml@dev
+    with:
+      PROJECT_NAME: trieste
+      ENV_NAME: test
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.TEST_AZURE_CREDENTIALS }}
+      DBSA_PASSWORD: ${{ secrets.TEST_DBSA_PASSWORD }}
