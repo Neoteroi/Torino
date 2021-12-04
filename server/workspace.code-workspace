@@ -13,5 +13,13 @@
             "path": "../.github"
         }
     ],
-    "settings": {}
+    "settings": {
+        "editor.formatOnSave": true
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-python.python",
+            "irongeek.vscode-env"
+        ]
+    }
 }
