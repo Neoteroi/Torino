@@ -1,0 +1,155 @@
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes preloader4 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes preloader4 {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+#global-preloader {
+  position: absolute;
+  z-index: 10000; //above anything else
+  top: 0px;
+  left: 0px;
+  background-color: rgb(255, 255, 255);
+  .preloader-icon {
+    max-height: 550px;
+  }
+}
+
+.preloader-mask {
+  height: 100%;
+  width: 100%;
+  min-height: 300px;
+  position: relative;
+  -webkit-animation: 0.5s ease 0s normal forwards 1 fadein;
+  animation: 0.5s ease 0s normal forwards 1 fadein;
+
+  .preloader-icon {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    height: 100%;
+    width: 100%;
+
+    &:before {
+      content: "";
+      width: 64px;
+      height: 64px;
+      display: inline-block;
+      padding: 0;
+      border-radius: 100%;
+      border: 4px solid;
+      border-top-color: #bc7cd2;
+      border-bottom-color: rgba(102, 215, 220, 0.15);
+      border-left-color: #bc7cd2;
+      border-right-color: rgba(102, 215, 220, 0.15);
+      -webkit-animation: preloader4 0.8s linear infinite;
+      animation: preloader4 0.8s linear infinite;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+    }
+  }
+
+  &.overlay {
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    height: 100%;
+
+    &.preloader-icon {
+      height: 100vw;
+    }
+  }
+
+  &.modal-preloader,
+  &.covering {
+    min-height: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 100;
+  }
+
+  &.covering .preloader-icon:before {
+    top: 10%;
+  }
+
+  &.mini {
+    width: 26px;
+    height: 26px;
+    min-height: 26px;
+
+    .preloader-icon {
+      background-size: 26px;
+      background-position: 0;
+      width: 26px;
+      height: 26px;
+      &:before {
+        width: 26px !important;
+        height: 26px !important;
+      }
+    }
+  }
+
+  &.tiny-preloader {
+    width: 16px;
+    height: 16px;
+    min-height: 16px;
+
+    .preloader-icon {
+      background-size: 16px;
+      background-position: 0;
+      &:before {
+        width: 16px;
+        height: 16px;
+        left: 0;
+        top: 0;
+      }
+    }
+  }
+}
+
+.display-none {
+  .preloader-mask,
+  .preloader-icon {
+    display: none !important;
+  }
+}

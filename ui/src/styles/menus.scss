@@ -1,0 +1,18 @@
+.bar-contents {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-right: -40px;
+
+  > h1 {
+    padding-top: 2px;
+    margin-left: 5px;
+    margin-right: auto;
+    font-family: "Montserrat", sans-serif;
+    line-height: 1.4;
+  }
+}
+
+header {
+  padding-left: 162px;
+}

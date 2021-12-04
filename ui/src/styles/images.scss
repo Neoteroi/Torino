@@ -1,0 +1,21 @@
+img {
+  &.thumbnail {
+    max-height: 120px;
+  }
+
+  &.medium-size {
+    max-width: 40vw;
+  }
+}
+
+.picture-selection {
+  display: flex;
+
+  div {
+    margin: 0 10px 10px 0;
+  }
+
+  img {
+    max-width: 120px;
+  }
+}

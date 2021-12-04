@@ -1,0 +1,21 @@
+# Default application settings, to run the application for local development.
+#
+# These settings are read in `app.configuration.py` and can be overridden by environmental variables,
+# thanks to `essentials-configuration` package.
+# Refer to https://github.com/Neoteroi/essentials-configuration for more information.
+#
+# The ARM templates provided with the project template configure properly the application
+# settings, so nothing more needs to be done here.
+#
+app_name: "Demo"
+
+# TODO: add to ARM template
+db_connection_string: postgresql+asyncpg://postgres:postgres@localhost:5432/apidemo
+
+debug: true
+
+show_error_details: true
+
+# Replace the following with the Application Insights' instrumentation key
+# from your DEV environment, so you can see telemetries collected also when developing locally
+monitoring_key: "f0474446-331f-4e94-ad1a-9ffdeb79af09"

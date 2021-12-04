@@ -1,0 +1,24 @@
+@media print {
+  h1.headline {
+    color: #000;
+  }
+
+  .MuiPaper-elevation4 {
+    box-shadow: none !important;
+  }
+
+  #main-drawer {
+    display: none;
+  }
+
+  #layout.ui-drawer-closed > header,
+  #layout.ui-drawer-closed > main,
+  #layout.ui-drawer-open > header,
+  #layout.ui-drawer-open > main {
+    padding-left: 0 !important;
+  }
+
+  button {
+    display: none !important;
+  }
+}

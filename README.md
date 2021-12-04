@@ -1,5 +1,5 @@
 # Torino
-Torino is a media storage for Azure created by [Roberto Prevato](https://github.com/RobertoPrevato),
+Torino is a media storage explorer for Azure created by [Roberto Prevato](https://github.com/RobertoPrevato),
 consisting of:
 
 * a back-end API built with BlackSheep, using a PostgreSQL database in Azure
@@ -13,9 +13,9 @@ in a few minutes. :sparkles: :cake:
 
 ---
 
-The project is by no mean complete _all-in-all_, for example at the current
-state it lacks support for resizing videos, the PostgreSQL database is not
-locked inside a VNet and is protected only by firewall rules and a secret.
+The project is a work-in-progress and by no mean complete, for example at the
+current state it lacks support for resizing videos, the PostgreSQL database is
+not locked inside a VNet and is protected only by firewall rules and passwords.
 However, Torino is already an advanced product featuring:
 
 * CI/CD automation using GitHub Workflows, reusable workflows to handle
@@ -103,27 +103,32 @@ GitHub agents.
     uses: <ACCOUNT or ORG>/<PROJECT>/.github/workflows/server-env.yml@dev
 ```
 
-3. Choose a project name, for example `pincopallo`, and update the workflow
-   files to use `pincopallo` instead of `torino` (note that a bug in the GH
-   reusable workflows doesn't allow to use the input for called workflows from
-   env variables, therefore it is necessary to write more than once the
-   project name)
+3. Choose a project name, for example if you chose `pincopallo`, update the
+   workflow files to use `pincopallo` instead of `torino` (note that a bug in
+   the GH reusable workflows doesn't allow to use dynamic input from env
+   variables for called workflows, therefore it is necessary to write more than
+   once the project name)
 
-4. Create Azure credentials to enable automated deployments from GitHub Workflows.
+1. Create Azure credentials to enable automated deployments from GitHub Workflows.
    If you decide to use credentials scoped over exact resource groups, you will
    need to create the resource groups before creating the credentials.
    Using the Azure CLI
 
-5. Create the necessary app registrations in Azure Active Directory (examples
+2. Create the necessary app registrations in Azure Active Directory (examples
    are provided below using the Azure CLI and manifests provided in this
    repository) + Configure yourself as ADMIN!
    + Configure the APPLICATION ID as setting!! TODO
 
-6. Generate secrets that will be used when configuring the PostgreSQL database:
+3. Generate secrets that will be used when configuring the PostgreSQL database:
    these are configured as GitHub Secrets
 
-7. Once secrets are configured in GitHub, it is possible to run the
+4. Once secrets are configured in GitHub, it is possible to run the
    infrastructure pipeline, to provision the `dev` environment of the system.
    **Run the Infrastructure deployment manually** (TODO)
 
-8. Run the `Server deployment` manually (TODO)
+5. Run the `Server deployment` manually (TODO)
+
+
+## Considerations regarding the separation of the SPA and the API
+In code, the SPA and the API are completely separated. Meaning that is it
+possible to (TODO...)

@@ -1,0 +1,56 @@
+@import "./colors.scss";
+
+.tabs {
+  display: flex;
+  background: $tabs-background-color;
+  flex-flow: row;
+  flex-wrap: wrap;
+  overflow: visible;
+  text-transform: uppercase;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  .tab {
+    button {
+      border-radius: 0 !important;
+    }
+
+    &:after {
+      border-bottom: 2px solid $tab-underline-color;
+      content: "";
+      width: 0%;
+      margin: 0 auto;
+      display: block;
+      -webkit-transition: width 0.2s ease-in-out;
+      -moz-transition: width 0.2s ease-in-out;
+      -o-transition: width 0.2s ease-in-out;
+      transition: width 0.2s ease-in-out;
+    }
+
+    &:hover {
+      &:after {
+        width: 100%;
+      }
+    }
+
+    &.selected {
+      background: $tabs-selected-background-color;
+
+      &:after {
+        width: 100%;
+      }
+    }
+
+    button {
+      padding: 1rem;
+    }
+
+    a {
+      text-decoration: none;
+
+      button {
+        color: $tab-button-color;
+        border-color: $tab-button-border-color;
+      }
+    }
+  }
+}

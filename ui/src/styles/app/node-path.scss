@@ -1,0 +1,40 @@
+.node-path {
+  margin: 1.2rem 0;
+  padding: 0;
+  padding-bottom: 0.5rem;
+  background: #eee;
+  border-radius: 5px;
+  padding: 0.8em;
+
+  .preloader-mask.mini {
+    height: 20px;
+    min-height: 20px;
+
+    .preloader-icon:before {
+      top: -2px;
+      left: -2px;
+    }
+  }
+
+  a,
+  .current-folder,
+  .divider {
+    background: #1e4245;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    margin-right: 0.8rem;
+  }
+
+  .current-folder {
+    cursor: default;
+    font-weight: bolder !important;
+    color: cyan !important;
+  }
+
+  .divider {
+    opacity: 0.5;
+    cursor: default;
+  }
+}

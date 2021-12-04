@@ -1,0 +1,18 @@
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  .MuiCardActions-root {
+    justify-content: flex-end;
+  }
+}
+
+.card-root {
+  min-width: 365px;
+  margin: 0.5rem; // auto ?
+}
+
+.card-image {
+  padding-top: 56.25%;
+}

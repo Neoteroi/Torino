@@ -1,0 +1,16 @@
+$placeholder-color: #fff;
+
+::placeholder {
+  color: $placeholder-color;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: $placeholder-color;
+  opacity: 1;
+}
+
+::-ms-input-placeholder {
+  color: $placeholder-color;
+  opacity: 1;
+}
