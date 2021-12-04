@@ -11,7 +11,7 @@ from opencensus.trace import config_integration
 from opencensus.trace.samplers import AlwaysOnSampler
 from opencensus.trace.span import SpanKind
 from opencensus.trace.tracer import Tracer
-from logic.settings import Settings
+from domain.settings import Settings
 
 # configures span id
 config_integration.trace_integrations(["logging"])

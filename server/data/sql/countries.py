@@ -4,7 +4,7 @@ from domain.countries import CountriesDataProvider, Country
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import select
 
-from .dbmodel import Country as CountryEntity
+from .dbmodel import CountryEntity
 
 
 class SqlCountriesDataProvider(CountriesDataProvider):

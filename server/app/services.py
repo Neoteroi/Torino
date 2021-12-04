@@ -12,8 +12,8 @@ from typing import Tuple
 from core.events import ServicesRegistrationContext
 from data.sql.services import register_sqldb_services
 from rodi import Container
-from logic import register_handlers
-from logic.settings import Settings
+from domain import register_handlers
+from domain.settings import Settings
 
 from configuration.common import Configuration
 

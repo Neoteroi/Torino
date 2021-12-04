@@ -1,7 +1,7 @@
-# Default application settings, to run the application for local development.
+# Common application settings, used by all environments.
 #
-# These settings are read in `app.configuration.py` and can be overridden by environmental variables,
-# thanks to `essentials-configuration` package.
+# These settings are read in `app/program.py` and can be overridden by
+# environmental variables, thanks to `essentials-configuration` package.
 # Refer to https://github.com/Neoteroi/essentials-configuration for more information.
 #
 # The ARM templates provided with the project template configure properly the application

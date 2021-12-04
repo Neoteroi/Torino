@@ -2,7 +2,7 @@ from typing import List
 
 from blacksheep.server.controllers import ApiController, get
 from domain.countries import Country
-from logic.countries import CountriesHandler
+from domain.countries import CountriesHandler
 
 
 class CountriesController(ApiController):
