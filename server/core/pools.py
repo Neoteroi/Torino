@@ -3,7 +3,6 @@ from asyncio import AbstractEventLoop, BaseEventLoop
 from concurrent.futures.thread import ThreadPoolExecutor
 from typing import Any, Callable, Optional, TypeVar
 
-
 T = TypeVar("T")
 
 

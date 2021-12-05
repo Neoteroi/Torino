@@ -10,13 +10,14 @@ import os
 from typing import Tuple
 
 from configuration.common import Configuration
+from rodi import Container
+
 from core.events import ServicesRegistrationContext
 from data.azstorage.services import register_az_storage_services
 from data.sql.services import register_sql_services
 from domain.context import register_user_services
 from domain.services import register_handlers
 from domain.settings import Settings
-from rodi import Container
 
 
 def configure_services(

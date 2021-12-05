@@ -4,10 +4,10 @@ from datetime import datetime
 from typing import List, Optional
 from uuid import UUID, uuid4
 
-from core.errors import PreconfitionFailed
 from essentials.exceptions import ObjectNotFound
 from slugify import slugify
 
+from core.errors import PreconfitionFailed
 from domain.blobs import BlobsService
 
 from .context import OperationContext

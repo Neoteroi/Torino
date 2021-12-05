@@ -1,3 +1,4 @@
-from .vfs import VirtualFileSystemController
-from .blobs import BlobsController
+# flake8: noqa
 from .albums import AlbumsController
+from .blobs import BlobsController
+from .vfs import VirtualFileSystemController

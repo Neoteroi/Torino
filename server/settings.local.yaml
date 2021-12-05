@@ -1,3 +1,6 @@
 # Settings for LOCAL development
 
+show_error_details: true
+
+# example of local connection string:
 db_connection_string: postgresql+asyncpg://postgres:postgres@localhost:5432/torino2

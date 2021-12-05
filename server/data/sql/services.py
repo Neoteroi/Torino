@@ -1,6 +1,7 @@
+from rodi import Container
+
 from domain.albums import AlbumsDataProvider
 from domain.vfs import FileSystemDataProvider
-from rodi import Container
 
 from .albums import SQLAlbumsDataProvider
 from .vfs import SQLFileSystemDataProvider

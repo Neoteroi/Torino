@@ -1,8 +1,8 @@
 from blacksheep.server.authorization import auth
 from blacksheep.server.controllers import ApiController, post
-from domain.blobs import InitializeUploadInput, InitializeUploadOutput
-from domain.blobs import BlobsHandler
+
 from domain import Features
+from domain.blobs import BlobsHandler, InitializeUploadInput, InitializeUploadOutput
 
 
 class BlobsController(ApiController):

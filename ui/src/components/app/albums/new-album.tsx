@@ -20,13 +20,7 @@ export interface NewAlbumState {
   error: ApplicationError | null;
 }
 
-const DEFAULT_PICTURES = [
-  "/images/pexels-photo-1643457.jpeg",
-  "/images/pexels-photo-4466546.jpeg",
-  "/images/pexels-photo-460797.jpeg",
-  "/images/pexels-photo-5706559.jpeg",
-  "/images/pexels-photo-156934.jpeg",
-];
+const DEFAULT_PICTURES = ["/images/web_artist.jpg"];
 
 export default class NewAlbum extends Component<NewAlbumProps, NewAlbumState> {
   private nameField: React.RefObject<AlbumNameField>;

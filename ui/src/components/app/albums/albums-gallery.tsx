@@ -83,9 +83,7 @@ export default class Albums extends Component<AlbumsProps, AlbumsState> {
               <Link to={"/album/" + container.id} key={container.id}>
                 <Card className="card-root">
                   <CardMedia
-                    image={
-                      container.image_url || "/images/pexels-photo-156934.jpeg"
-                    }
+                    image={container.image_url || "/images/web_artist.jpg"}
                     className="card-image"
                   />
                   <CardActionArea>

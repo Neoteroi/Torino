@@ -1,7 +1,9 @@
+from concurrent.futures import Executor, ThreadPoolExecutor
+
 from rodi import Container
-from concurrent.futures import ThreadPoolExecutor, Executor
 
 from core.events import ServicesRegistrationContext
+
 from .albums import AlbumsHandler
 from .blobs import BlobsHandler
 from .pictures import PicturesHandler

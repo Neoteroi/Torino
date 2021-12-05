@@ -3,6 +3,7 @@ from concurrent.futures import Executor
 
 from gallerist import Gallerist, ImageMetadata, ImageSize
 from galleristazurestorage import AzureBlobFileStore
+
 from domain.settings import Settings
 
 

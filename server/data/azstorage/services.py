@@ -1,7 +1,8 @@
 from azure.storage.blob import BlobServiceClient
+from rodi import Container
+
 from domain.blobs import BlobsService
 from domain.settings import Settings
-from rodi import Container
 
 from .blobs import AzureStorageBlobsService
 

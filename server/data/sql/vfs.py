@@ -1,6 +1,11 @@
 from typing import List, Optional
 from uuid import UUID
 
+from essentials.exceptions import ObjectNotFound
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql import text
+from sqlalchemy.sql.expression import delete, select
+
 from domain.vfs import (
     FileImageData,
     FileSystemDataProvider,
@@ -8,10 +13,6 @@ from domain.vfs import (
     FileSystemNodePathFragment,
     FileSystemNodeType,
 )
-from essentials.exceptions import ObjectNotFound
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.sql import text
-from sqlalchemy.sql.expression import select, delete
 
 from .dbmodel import NodeEntity
 from .mapping import map_optional_uuid
@@ -150,7 +151,10 @@ class SQLFileSystemDataProvider(FileSystemDataProvider):
                 WHERE A.id = :id;
                 """
             )
-            cursor = await self.session.execute(query, {"id": str(node_id)})  # type: ignore
+            cursor = await self.session.execute(
+                query,  # type: ignore
+                {"id": str(node_id)},
+            )
 
             record = next(cursor, None)
 

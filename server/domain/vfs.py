@@ -5,13 +5,12 @@ from enum import Enum
 from typing import Dict, List, Optional
 from uuid import UUID, uuid4
 
+from essentials.exceptions import InvalidArgument, ObjectNotFound
+from pydantic import BaseModel
 from slugify import slugify
 
 from core.errors import AcceptedExceptionWithData, PreconfitionFailed
 from core.pathutils import DEFAULT_MIME, get_file_extension_from_name
-from essentials.exceptions import InvalidArgument, ObjectNotFound
-from pydantic import BaseModel
-
 from domain.logs import ailog
 from domain.pictures import PicturesHandler
 

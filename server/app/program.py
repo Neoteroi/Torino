@@ -51,5 +51,8 @@ def build_app() -> Application:
         max_age=900,
     )
 
+    # app.on_start += context.initialize
+    # app.on_stop += context.dispose
+
     docs.bind_app(app)
     return app

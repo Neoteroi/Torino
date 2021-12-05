@@ -1,4 +1,5 @@
 from typing import List
+
 from guardpost.authentication import Identity
 
 

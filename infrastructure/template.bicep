@@ -46,6 +46,12 @@ param dbAdministratorLogin string = 'pgsqladmin'
 @secure()
 param dbAdministratorLoginPassword string
 
+@description('Database application user password')
+@minLength(8)
+@maxLength(128)
+@secure()
+param dbAppUserPassword string
+
 @description('Azure database for PostgreSQL vCores capacity')
 @allowed([
   1
@@ -293,16 +299,12 @@ resource projectSiteAppSettings 'Microsoft.Web/sites/config@2015-08-01' = {
   name: 'appsettings'
   location: location
   properties: {
-    APP_SHOW_ERROR_DETAILS: 'true'
     SCM_DO_BUILD_DURING_DEPLOYMENT: 'true'
     auth__client_id: appClientId
     auth__tenant_id: tenantId
-    storage_account_name: storageAccountFullName
-    storage_account_key: listKeys(storageAccountFullName, '2015-05-01-preview').key1
-    postgres_db: dbName
-    postgres_user: '${dbAdministratorLogin}@${dbServerFullName}'
-    postgres_password: dbAdministratorLoginPassword
-    postgres_host: databaseServer.properties.fullyQualifiedDomainName
+    APP_ENV: environment
+    APP_STORAGE_ACCOUNT_NAME: storageAccountFullName
+    APP_STORAGE_ACCOUNT_KEY: listKeys(storageAccountFullName, '2015-05-01-preview').key1
     APP_DB_CONNECTION_STRING: 'postgresql+asyncpg://${dbAdministratorLogin}@${dbServerFullName}:${dbAdministratorLoginPassword}@${databaseServer.properties.fullyQualifiedDomainName}:5432/${projectName}'
     APP_MONITORING_KEY: appIns.properties.InstrumentationKey
   }
