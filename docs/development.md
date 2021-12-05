@@ -6,3 +6,5 @@
 * Node.js 14.3.0
 * nvm (recommended)
 * Visual Studio Code
+
+The system has been entirely developed in Ubuntu.

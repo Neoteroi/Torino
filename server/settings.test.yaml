@@ -1,3 +1,5 @@
 # TEST specific application settings
 
 use_hsts: true
+
+show_error_details: false

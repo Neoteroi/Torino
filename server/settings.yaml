@@ -10,12 +10,18 @@
 app_name: "Demo"
 
 # TODO: add to ARM template
-db_connection_string: postgresql+asyncpg://postgres:postgres@localhost:5432/apidemo
-
-debug: true
+db_connection_string: postgresql+asyncpg://postgres:postgres@localhost:5432/torino2
 
 show_error_details: true
 
 # Replace the following with the Application Insights' instrumentation key
 # from your DEV environment, so you can see telemetries collected also when developing locally
-monitoring_key: "f0474446-331f-4e94-ad1a-9ffdeb79af09"
+monitoring_key: "77166e6a-45ea-4e4e-b079-7e54fee6818c"
+
+storage_account_name: "devasweeuwsa"
+
+storage_account_key: "ueWYJeLdhDC1zEPRKF9IwYMqBPDoZSx+m+DsKSofP0+humqU4XEt6AvpWYF1HQxOKB3apQfLCPZGfVVyLVVXkw=="
+
+storage_connection_string: "DefaultEndpointsProtocol=https;AccountName=devasweeuwsa;AccountKey=ueWYJeLdhDC1zEPRKF9IwYMqBPDoZSx+m+DsKSofP0+humqU4XEt6AvpWYF1HQxOKB3apQfLCPZGfVVyLVVXkw==;EndpointSuffix=core.windows.net"
+
+file_upload_url: https://devasweeuwsa.blob.core.windows.net/

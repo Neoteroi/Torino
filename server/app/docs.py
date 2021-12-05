@@ -8,7 +8,7 @@ from blacksheep.server.openapi.v3 import OpenAPIHandler
 from openapidocs.v3 import Info
 
 docs = OpenAPIHandler(
-    info=Info(title="Example API", version="0.0.1"), anonymous_access=True
+    info=Info(title="Torino API", version="0.0.1"), anonymous_access=True
 )
 
 # include only endpoints whose path starts with "/api/"

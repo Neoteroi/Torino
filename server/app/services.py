@@ -1,5 +1,5 @@
 """
-Use this module to register required services.
+Use this module to register all required services.
 Services registered inside a `rodi.Container` are automatically injected into request
 handlers.
 
@@ -9,13 +9,14 @@ For more information and documentation, see:
 import os
 from typing import Tuple
 
-from core.events import ServicesRegistrationContext
-from data.sql.services import register_sqldb_services
-from rodi import Container
-from domain import register_handlers
-from domain.settings import Settings
-
 from configuration.common import Configuration
+from core.events import ServicesRegistrationContext
+from data.azstorage.services import register_az_storage_services
+from data.sql.services import register_sql_services
+from domain.context import register_user_services
+from domain.services import register_handlers
+from domain.settings import Settings
+from rodi import Container
 
 
 def configure_services(
@@ -37,8 +38,11 @@ def configure_services(
 
     container.add_instance(settings)
 
-    register_handlers(container)
+    register_handlers(container, context)
 
-    register_sqldb_services(container, context)
+    register_sql_services(container)
+    register_az_storage_services(container, settings)
+
+    register_user_services(container)
 
     return container, context, settings

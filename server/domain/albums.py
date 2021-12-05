@@ -4,13 +4,15 @@ from datetime import datetime
 from typing import List, Optional
 from uuid import UUID, uuid4
 
-from essentials.exceptions import ObjectNotFound
-
 from core.errors import PreconfitionFailed
+from essentials.exceptions import ObjectNotFound
+from slugify import slugify
+
 from domain.blobs import BlobsService
 
-from .vfs import FileSystemDataProvider, FileSystemNode
+from .context import OperationContext
 from .settings import Settings
+from .vfs import FileSystemDataProvider, FileSystemNode
 
 DEFAULT_STORAGE = UUID("00000000-0000-0000-0000-000000000000")
 
@@ -20,6 +22,7 @@ class Album:
     id: UUID
     storage_id: UUID
     name: str
+    slug: str
     image_url: str
     description: Optional[str]
     last_modified_time: datetime
@@ -171,10 +174,12 @@ class AlbumsHandler:
         current_time = datetime.utcnow()
 
         storage_id = UUID(data.storage_id) if data.storage_id else DEFAULT_STORAGE
+        slug = slugify(data.name)
 
         album = Album(
             id=uuid4(),
             name=data.name,
+            slug=slug,
             description=data.description,
             etag=current_time.isoformat(),
             last_modified_time=current_time,

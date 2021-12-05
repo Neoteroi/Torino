@@ -1,4 +1,7 @@
+import uuid
+
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.orm import registry, relationship  # type: ignore
 from sqlalchemy.sql import expression
@@ -44,7 +47,7 @@ ETagMixin.etag._creation_order = 9002  # type: ignore
 class StorageEntity(ETagMixin, Base):
     __tablename__ = "storages"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column("id", UUID(), primary_key=True, default=uuid.uuid4)
     name = Column(String(100), unique=True)
     type = Column(String(50))
     key_secret_id = Column(String(200), nullable=False)
@@ -53,7 +56,7 @@ class StorageEntity(ETagMixin, Base):
 class AlbumEntity(ETagMixin, Base):
     __tablename__ = "albums"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column("id", UUID(), primary_key=True, default=uuid.uuid4)
     storage_id = Column(
         ForeignKey("storages.id", ondelete="CASCADE"), nullable=False, index=True
     )
@@ -69,7 +72,7 @@ class AlbumEntity(ETagMixin, Base):
 class NodeEntity(ETagMixin, Base):
     __tablename__ = "nodes"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column("id", UUID(), primary_key=True, default=uuid.uuid4)
     album_id = Column(
         ForeignKey("albums.id", ondelete="CASCADE"), nullable=False, index=True
     )

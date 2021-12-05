@@ -10,7 +10,10 @@
             "request": "launch",
             "program": "server.py",
             "console": "integratedTerminal",
-            "justMyCode": false
+            "justMyCode": false,
+            "env": {
+                "APP_ENV": "local"
+            }
         }
     ]
 }

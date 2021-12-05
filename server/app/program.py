@@ -1,14 +1,15 @@
 import os
 
-import app.controllers  # noqa
 from blacksheep.server.application import Application
 from blacksheepsqlalchemy import use_sqlalchemy
-from core.events import ServicesRegistrationContext
-
 from configuration.common import Configuration, ConfigurationBuilder
 from configuration.env import EnvironmentVariables
 from configuration.yaml import YAMLFile
+from core.events import ServicesRegistrationContext
 
+import app.controllers  # noqa
+
+from .di import dependency_injection_middleware
 from .docs import docs
 from .errors import configure_error_handlers
 from .logs import configure_logging
@@ -34,12 +35,11 @@ def build_app() -> Application:
     app = Application(
         services=services,
         show_error_details=configuration.show_error_details,
-        debug=configuration.debug,
     )
 
     use_sqlalchemy(app, connection_string=configuration.db_connection_string)
 
-    # app.middlewares.append(dependency_injection_middleware)
+    app.middlewares.append(dependency_injection_middleware)
 
     configure_error_handlers(app)
     configure_logging(app, settings)

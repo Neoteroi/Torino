@@ -1,0 +1,3 @@
+# Settings for LOCAL development
+
+db_connection_string: postgresql+asyncpg://postgres:postgres@localhost:5432/torino2

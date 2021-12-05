@@ -4,7 +4,7 @@ This module defines how exceptions are handled by the web service.
 from typing import Any
 
 from blacksheep import Request, Response
-from blacksheep.server import Application
+from blacksheep.server.application import Application
 from blacksheep.server.responses import json, text
 from core.errors import AcceptedExceptionWithData, ConflictError, PreconfitionFailed
 from essentials.exceptions import (

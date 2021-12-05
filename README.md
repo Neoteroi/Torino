@@ -5,18 +5,18 @@ consisting of:
 * a back-end API built with BlackSheep, using a PostgreSQL database in Azure
   and other services to provide the storage functionalities
 * a front-end Single Page Application enabling interactive sign-in, offering
-  administrative features to configure containers of files and features to
-  navigate through the files
+  administrative features to configure containers of files, upload files,
+  and features to navigate through the files (e.g. picture gallery, players for
+  videos and mp3)
 
 Using this project is possible to provision a private media storage in Azure,
 in a few minutes. :sparkles: :cake:
 
 ---
 
-The project is a work-in-progress and by no mean complete, for example at the
-current state it lacks support for resizing videos, the PostgreSQL database is
-not locked inside a VNet and is protected only by firewall rules and passwords.
-However, Torino is already an advanced product featuring:
+The project is a work-in-progress and by no mean complete, it still lacks
+several features. However, Torino is ready for use and provides an advanced
+project template, featuring:
 
 * CI/CD automation using GitHub Workflows, reusable workflows to handle
   multiple environments, and a branch strategy to handle multiple environments
@@ -27,7 +27,7 @@ However, Torino is already an advanced product featuring:
   display pictures, play MP3s and videos
 * A clean API offering OpenAPI Documentation and supporting OpenID Connect
 * Support for access management using JWT Bearer authentication and Application
-  Roles
+  Roles (authentication and authorization strategies)
 * Safe handling of private files (access to files is controlled using temporary
   shared access signatures for the Azure Blob Service)
 * Resizing of pictures, supporting common pictures formats
@@ -38,7 +38,7 @@ However, Torino is already an advanced product featuring:
 Since the project is open source and includes automation, it can be easily
 enhanced with the desided features.
 
-## Considerations regarding access management
+# Considerations regarding access management
 
 The system is thought to be used with Azure Active Directory and not allow
 sign-up for new users, however it can be easily modified to be integrated with
@@ -74,6 +74,19 @@ workflows](https://docs.github.com/en/actions/learn-github-actions/reusing-workf
 However, for private use it might be sufficient to provision a single instance
 of the system.
 
+## Pricing considerations
+The system is configured to use a PostgreSQL database with `Basic` pricing tier
+and `Dev/Test` pricing tier for the App Service Plan for the **DEV**
+environment, and better services for the `TEST` and `PROD` environments. Adjust
+the `Bicep` parameters files as desired, to scale up or down the services. In
+the provided configuration, these two services are those generating the bigger
+costs. Since the API uses `SQLAlchemy` and database migrations with `Alembic`,
+it would be possible to easily replace the Azure Database for PostgreSQL with a
+Azure SQL database, reducing the costs of the database. However the provided
+project template uses PostgreSQL at the moment. In the future an example with
+Azure SQL might be provided, in addition, or in substitution of the PostgreSQL
+database.
+
 ## Considerations about Azure subscriptions and credentials
 It is recommended to use two Azure subscriptions: one for the non-production
 environments, one for the production environment. When using separate
@@ -83,9 +96,8 @@ the benefit that agents can create the resource groups automatically, if they
 don't exist, thus reducing the amount of operations that need to be done for
 the first time configuration.
 
-Otherwise, if Azure credentials are scoped for exact resource groups, the
-resource groups must be created before generating the credentials for the
-GitHub agents.
+Otherwise, if Azure credentials are scoped for exact resource groups, resource
+groups must be created before generating the credentials for the GitHub agents.
 
 ## How to provision an instance of the system
 

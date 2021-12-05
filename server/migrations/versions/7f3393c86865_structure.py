@@ -1,16 +1,16 @@
 """structure
 
-Revision ID: 919f67b40221
+Revision ID: 7f3393c86865
 Revises:
-Create Date: 2021-12-04 20:14:40.998105
+Create Date: 2021-12-04 22:42:17.312518
 
 """
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = "919f67b40221"
+revision = "7f3393c86865"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -19,7 +19,7 @@ depends_on = None
 def upgrade():
     op.create_table(
         "storages",
-        sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
+        sa.Column("id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("name", sa.String(length=100), nullable=True),
         sa.Column("type", sa.String(length=50), nullable=True),
         sa.Column("key_secret_id", sa.String(length=200), nullable=False),
@@ -45,18 +45,25 @@ def upgrade():
         sa.UniqueConstraint("name"),
     )
 
+    op.execute("CREATE UNIQUE INDEX ux_storage_name ON storages (lower(name))")
+
     # insert the default storage
     op.execute(
         """
-        INSERT INTO storages (name, type, key_secret_id)
-        VALUES ('Default', 'Azure Storage', '')
+        INSERT INTO storages (id, name, type, key_secret_id)
+        VALUES (
+            '00000000-0000-0000-0000-000000000000',
+            'Default',
+            'Azure Storage',
+            ''
+        )
         """
     )
 
     op.create_table(
         "albums",
-        sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
-        sa.Column("storage_id", sa.Integer(), nullable=False),
+        sa.Column("id", postgresql.UUID(as_uuid=True), nullable=False),
+        sa.Column("storage_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("name", sa.String(length=200), nullable=False),
         sa.Column("slug", sa.String(length=255), nullable=False),
         sa.Column("description", sa.String(length=2000), nullable=True),
@@ -95,9 +102,9 @@ def upgrade():
 
     op.create_table(
         "nodes",
-        sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
-        sa.Column("album_id", sa.Integer(), nullable=False),
-        sa.Column("parent_id", sa.Integer(), nullable=True),
+        sa.Column("id", postgresql.UUID(as_uuid=True), nullable=False),
+        sa.Column("album_id", postgresql.UUID(as_uuid=True), nullable=False),
+        sa.Column("parent_id", postgresql.UUID(as_uuid=True), nullable=True),
         sa.Column("name", sa.String(length=255), nullable=False),
         sa.Column("slug", sa.String(length=255), nullable=False),
         sa.Column("type", sa.String(length=50), nullable=False),
@@ -155,6 +162,8 @@ def upgrade():
 
 
 def downgrade():
+    op.drop_index(op.f("ux_storage_name"), table_name="storages")
+
     for node_index in {
         "ix_nodes_parent_id",
         "ix_nodes_album_id",

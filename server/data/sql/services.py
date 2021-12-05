@@ -1,14 +1,12 @@
-from core.events import ServicesRegistrationContext
-from domain.countries import CountriesDataProvider
-from opencensus.trace import config_integration
+from domain.albums import AlbumsDataProvider
+from domain.vfs import FileSystemDataProvider
 from rodi import Container
 
-from .countries import SqlCountriesDataProvider
+from .albums import SQLAlbumsDataProvider
+from .vfs import SQLFileSystemDataProvider
 
-config_integration.trace_integrations(["sqlalchemy"])
 
-
-def register_sqldb_services(
-    container: Container, context: ServicesRegistrationContext
-) -> None:
-    container.add_scoped(CountriesDataProvider, SqlCountriesDataProvider)
+def register_sql_services(container: Container) -> None:
+    # services **MUST** be scoped here!
+    container.add_scoped(FileSystemDataProvider, SQLFileSystemDataProvider)
+    container.add_scoped(AlbumsDataProvider, SQLAlbumsDataProvider)

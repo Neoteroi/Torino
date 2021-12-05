@@ -1,7 +1,10 @@
-from rodi import Container
+class Features:
+    UPLOAD = "UPLOAD"
+    ALBUMS_WRITE = "ALBUMS_WRITE"
+    DELETE_ALBUMS = "DELETE_ALBUMS"
 
-from .countries import CountriesHandler
 
-
-def register_handlers(container: Container) -> None:
-    container.add_scoped(CountriesHandler)
+class Roles:
+    ADMIN = "ADMIN"
+    ALBUMS_WRITE = "ALBUMS_WRITE"
+    UPLOAD = "UPLOAD"
