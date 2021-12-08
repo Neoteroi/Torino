@@ -17,7 +17,7 @@ export type SsoSilentRequest = Partial<
 >;
 
 const storage = sessionStorage;
-const TOKEN_STORAGE_KEY = "ID_TOKEN";
+const TOKEN_STORAGE_KEY = "ACCESS_TOKEN";
 
 export function hasStoredToken(): boolean {
   return TOKEN_STORAGE_KEY in storage;
@@ -29,9 +29,9 @@ export function login(): Promise<User> {
       .loginPopup(loginRequest)
       .then((resp) => {
         if (resp !== null) {
-          storage.setItem(TOKEN_STORAGE_KEY, resp.idToken);
+          storage.setItem(TOKEN_STORAGE_KEY, resp.accessToken);
 
-          const user = userFromAccessToken(resp.idToken);
+          const user = userFromAccessToken(resp.accessToken);
 
           if (user) {
             resolve(user);
@@ -70,9 +70,9 @@ export function loginSilent(loginHint: string): Promise<User | null> {
       })
       .then((resp) => {
         if (resp !== null) {
-          storage.setItem(TOKEN_STORAGE_KEY, resp.idToken);
+          storage.setItem(TOKEN_STORAGE_KEY, resp.accessToken);
 
-          const user = userFromAccessToken(resp.idToken);
+          const user = userFromAccessToken(resp.accessToken);
 
           if (user) {
             resolve(user);

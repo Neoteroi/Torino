@@ -1,7 +1,7 @@
 from blacksheep.server.authorization import auth
 from blacksheep.server.controllers import ApiController, post
 
-from domain import Features
+from domain import Roles
 from domain.blobs import BlobsHandler, InitializeUploadInput, InitializeUploadOutput
 
 
@@ -15,7 +15,7 @@ class BlobsController(ApiController):
     def class_name(cls) -> str:
         return "blobs"
 
-    @auth(Features.UPLOAD)
+    @auth(Roles.ADMIN)
     @post("/initialize-upload")
     async def initialize_upload(
         self, data: InitializeUploadInput

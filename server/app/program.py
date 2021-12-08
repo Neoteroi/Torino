@@ -11,6 +11,7 @@ from essentials.folders import ensure_folder
 import app.controllers  # noqa
 from app.security.httpsmiddleware import HSTSMiddleware
 
+from .auth import configure_auth
 from .di import dependency_injection_middleware
 from .docs import docs
 from .errors import configure_error_handlers
@@ -51,11 +52,12 @@ def build_app() -> Application:
     if configuration.hsts:
         app.middlewares.append(HSTSMiddleware())
 
+    configure_auth(app, configuration)
     configure_error_handlers(app)
     configure_logging(app, settings)
 
     ensure_folder("app/static")
-    app.serve_files("app/static", fallback_document="index.html")
+    app.serve_files("app/static", fallback_document="index.html", allow_anonymous=True)
 
     app.use_cors(
         allow_methods="*",

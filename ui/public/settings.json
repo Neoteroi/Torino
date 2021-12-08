@@ -1,5 +1,5 @@
 {
-  "api_url": "http://localhost:44777",
-  "client_id": "ac8ea850-5138-4fbb-962c-b1ed7ac55163",
-  "client_authority": "https://login.microsoftonline.com/robertoprevatogmail.onmicrosoft.com"
+    "api_url": "http://localhost:44777",
+    "client_id": "9c37926b-4517-432b-9b88-eb77e376fb47",
+    "client_authority": "https://login.microsoftonline.com/robertoprevatogmail.onmicrosoft.com"
 }

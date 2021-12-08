@@ -1,10 +1,2 @@
-class Features:
-    UPLOAD = "UPLOAD"
-    ALBUMS_WRITE = "ALBUMS_WRITE"
-    DELETE_ALBUMS = "DELETE_ALBUMS"
-
-
 class Roles:
     ADMIN = "ADMIN"
-    ALBUMS_WRITE = "ALBUMS_WRITE"
-    UPLOAD = "UPLOAD"

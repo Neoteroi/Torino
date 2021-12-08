@@ -7,6 +7,9 @@
 # The ARM templates provided with the project template configure properly the application
 # settings, so nothing more needs to be done here.
 #
+
+hsts: true
+
 show_error_details: false
 
 storage_account_name: "devasweeuwsa"
@@ -18,3 +21,7 @@ db_connection_string: postgresql+asyncpg://postgres:postgres@localhost:5432/tori
 # Replace the following with the Application Insights' instrumentation key
 # from your DEV environment, so you can see telemetries collected also when developing locally
 monitoring_key: "77166e6a-45ea-4e4e-b079-7e54fee6818c"
+
+auth:
+  audience: api://e9ee7140-519d-458c-9621-0b3e110ea5a3
+  issuer: https://sts.windows.net/b62b317a-19c2-40c0-8650-2d9672324ac4/

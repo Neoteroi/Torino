@@ -6,13 +6,13 @@ import {
   PreconditionFailedError,
   UnauthorizedError,
 } from "./errors";
-import { loginSilent, userFromStorage } from "../components/app/auth";
+import {loginSilent, userFromStorage} from "../components/app/auth";
 
 const JSON_ContentType = "application/json; charset=utf-8";
 
 const storage = sessionStorage;
 
-export const ACCESS_TOKEN_KEY = "ID_TOKEN";
+export const ACCESS_TOKEN_KEY = "ACCESS_TOKEN";
 
 export function getAccessToken(): string | null {
   return storage.getItem(ACCESS_TOKEN_KEY);
@@ -58,7 +58,6 @@ async function appFetch<T>(
   addAuth: boolean = true,
   retrying: boolean = false
 ): Promise<T> {
-
   // extend init properties with an access token
   if (addAuth) {
     if (init === undefined) {
@@ -92,7 +91,6 @@ async function appFetch<T>(
   }
 
   if (response.status === 401) {
-
     if (retrying) {
       // this is already a retry: don't try again,
       throw new UnauthorizedError();
@@ -109,7 +107,6 @@ async function appFetch<T>(
         } else {
           throw new UnauthorizedError();
         }
-
       } catch {
         throw new UnauthorizedError();
       }

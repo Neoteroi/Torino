@@ -1,4 +1,6 @@
-# Settings for LOCAL development
+# Settings for the LOCAL development
+
+hsts: false
 
 show_error_details: true
 
