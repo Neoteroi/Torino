@@ -36,10 +36,6 @@ param linuxFxVersion string = 'PYTHON|3.8'
 ])
 param storageAccountType string = 'Standard_LRS'
 
-@description('Database administrator login name')
-@minLength(1)
-param dbAdministratorLogin string = 'pgsqladmin'
-
 @description('Database administrator password')
 @minLength(8)
 @maxLength(128)
@@ -110,6 +106,8 @@ param alertEmails array = [
   */
 ]
 
+var dbAppUserName = 'webapi'
+var dbAdministratorLogin = 'pgsqladmin'
 var projectFullName = '${environment}-${projectName}'
 var appServicePlanFullName = '${environment}-${projectName}-server'
 var storageAccountFullName = replace('${projectFullName}stacc', '-', '')
@@ -300,12 +298,13 @@ resource projectSiteAppSettings 'Microsoft.Web/sites/config@2015-08-01' = {
   location: location
   properties: {
     SCM_DO_BUILD_DURING_DEPLOYMENT: 'true'
-    auth__client_id: appClientId
-    auth__tenant_id: tenantId
+    APP_SHOW_ERROR_DETAILS: 'false'
+    APP_CLIENT_ID: appClientId
+    APP_TENANT_ID: tenantId
     APP_ENV: environment
     APP_STORAGE_ACCOUNT_NAME: storageAccountFullName
     APP_STORAGE_ACCOUNT_KEY: listKeys(storageAccountFullName, '2015-05-01-preview').key1
-    APP_DB_CONNECTION_STRING: 'postgresql+asyncpg://${dbAdministratorLogin}@${dbServerFullName}:${dbAdministratorLoginPassword}@${databaseServer.properties.fullyQualifiedDomainName}:5432/${projectName}'
+    APP_DB_CONNECTION_STRING: 'postgresql+asyncpg://${dbAppUserName}@${dbServerFullName}:${dbAppUserPassword}@${databaseServer.properties.fullyQualifiedDomainName}:5432/${projectName}'
     APP_MONITORING_KEY: appIns.properties.InstrumentationKey
   }
 }
@@ -342,3 +341,12 @@ resource databaseFirewallRule 'Microsoft.DBforPostgreSQL/servers/firewallrules@2
     endIpAddress: rule.EndIpAddress
   }
 }]
+
+resource database 'Microsoft.DBforPostgreSQL/servers/databases@2017-12-01' = {
+  parent: databaseServer
+  name: dbName
+  properties: {
+    charset: 'utf8'
+    collation: 'English_United States.1252'
+  }
+}

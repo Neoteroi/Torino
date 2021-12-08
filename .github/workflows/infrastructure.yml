@@ -31,6 +31,7 @@ jobs:
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.DEV_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.DEV_DBSA_PASSWORD }}
+      DBAPP_PASSWORD: ${{ secrets.DEV_DBAPP_PASSWORD }}
 
   deploy-test:
     if: github.event.inputs.deploy_to_test == '1' || github.ref == 'refs/heads/test'
@@ -42,6 +43,7 @@ jobs:
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.TEST_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.TEST_DBSA_PASSWORD }}
+      DBAPP_PASSWORD: ${{ secrets.TEST_DBAPP_PASSWORD }}
 
   deploy-prod:
     if: github.event.inputs.deploy_to_prod == '1' || github.ref == 'refs/heads/prod'
@@ -53,3 +55,4 @@ jobs:
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.PROD_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.PROD_DBSA_PASSWORD }}
+      DBAPP_PASSWORD: ${{ secrets.PROD_DBAPP_PASSWORD }}

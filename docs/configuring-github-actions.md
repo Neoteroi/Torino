@@ -63,12 +63,13 @@ this approach is not described here (the core concepts don't vary).
 The following table lists the secrets that are required for a single `DEV`
 environment:
 
-| Secret name            | Description                                                                 |
-| ---------------------- | --------------------------------------------------------------------------- |
-| DEV_AZURE_SUBSCRIPTION | Azure subscription ID for the DEV environment.                              |
-| DEV_AZURE_CREDENTIALS  | Deployment credentials scoped for the DEV resource group.                   |
-| DEV_DB_MIGCONNSTRING   | Connection string used for database migrations.                             |
-| DEV_DBSA_PASSWORD      | DBA password used to create services in Azure (used in the ARM deployment). |
+| Secret name                 | Description                                                                 |
+| --------------------------- | --------------------------------------------------------------------------- |
+| DEV_AZURE_SUBSCRIPTION (?)  | Azure subscription ID for the DEV environment.                              |
+| DEV_AZURE_CREDENTIALS       | Deployment credentials scoped for the DEV resource group.                   |
+| DEV_DB_MIGCONNSTRING        | Connection string used for database migrations.                             |
+| DEV_DBSA_PASSWORD           | DBA password used to create services in Azure (used in the ARM deployment). |
+| DEV_API_APP_REGISTRATION_ID | App registration ID for the API.                                            |
 
 #### Generating deployment credentials
 
@@ -109,11 +110,7 @@ SUBSCRIPTION_ID="3756d039-9ddf-4efc-9eec-11dec0d9ff59"
 # subscription id can be found using `az account show`
 
 # generate deployment credentials
-az ad sp create-for-rbac \
-   --name "demoapi-gh-dev-agent" \
-   --role contributor \
-   --scopes /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RG \
-   --sdk-auth
+az ad sp create-for-rbac --name "gh-agent" --role contributor --scopes /subscriptions/$SUBSCRIPTION_ID --sdk-auth
 ```
 
 The output of the command looks like the following:

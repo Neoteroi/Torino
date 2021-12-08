@@ -4,15 +4,15 @@ param projectName string
 param resourcesInfo object = {
   appinsights: {
     type: 'microsoft.insights/components'
-    suffix: 'appins'
+    suffix: '-appins'
   }
   webapp: {
     type: 'Microsoft.Web/sites'
-    suffix: 'webapp'
+    suffix: ''
   }
   serverfarm: {
     type: 'Microsoft.Web/serverfarms'
-    suffix: 'server'
+    suffix: '-server'
   }
 }
 
@@ -116,7 +116,7 @@ resource alerts_name 'Microsoft.Insights/metricAlerts@2018-03-01' = [for item in
     severity: item.severity
     description: item.description
     scopes: [
-      resourceId(resourcesInfo[item.resource].type, '${name}-${resourcesInfo[item.resource].suffix}')
+      resourceId(resourcesInfo[item.resource].type, '${name}${resourcesInfo[item.resource].suffix}')
     ]
     evaluationFrequency: item.evaluationFrequency
     windowSize: item.windowSize

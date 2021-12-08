@@ -6,8 +6,10 @@ from configuration.common import Configuration, ConfigurationBuilder
 from configuration.env import EnvironmentVariables
 from configuration.yaml import YAMLFile
 from core.events import ServicesRegistrationContext
+from essentials.folders import ensure_folder
 
 import app.controllers  # noqa
+from app.security.httpsmiddleware import HSTSMiddleware
 
 from .di import dependency_injection_middleware
 from .docs import docs
@@ -39,10 +41,21 @@ def build_app() -> Application:
 
     use_sqlalchemy(app, connection_string=configuration.db_connection_string)
 
+    app.on_start += context.initialize
+    app.on_stop += context.dispose
+
     app.middlewares.append(dependency_injection_middleware)
+
+    # Note: HTTP -> HTTPS redirection is not needed, because
+    # it is configured in the hosting service (see template.bicep httpsOnly)
+    if configuration.hsts:
+        app.middlewares.append(HSTSMiddleware())
 
     configure_error_handlers(app)
     configure_logging(app, settings)
+
+    ensure_folder("app/static")
+    app.serve_files("app/static", fallback_document="index.html")
 
     app.use_cors(
         allow_methods="*",
@@ -50,9 +63,6 @@ def build_app() -> Application:
         allow_headers="*",
         max_age=900,
     )
-
-    # app.on_start += context.initialize
-    # app.on_stop += context.dispose
 
     docs.bind_app(app)
     return app

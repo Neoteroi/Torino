@@ -3,11 +3,11 @@ Torino is a media storage explorer for Azure created by [Roberto Prevato](https:
 consisting of:
 
 * a back-end API built with BlackSheep, using a PostgreSQL database in Azure
-  and other services to provide the storage functionalities
+  and other services to provide the storage and administration features
 * a front-end Single Page Application enabling interactive sign-in, offering
-  administrative features to configure containers of files, upload files,
-  and features to navigate through the files (e.g. picture gallery, players for
-  videos and mp3)
+  an administrative interface to configure containers of files, upload files,
+  and features to navigate through the virtual file system files
+  (e.g. picture gallery, players for videos and mp3)
 
 Using this project is possible to provision a private media storage in Azure,
 in a few minutes. :sparkles: :cake:
@@ -18,25 +18,25 @@ The project is a work-in-progress and by no mean complete, it still lacks
 several features. However, Torino is ready for use and provides an advanced
 project template, featuring:
 
-* CI/CD automation using GitHub Workflows, reusable workflows to handle
-  multiple environments, and a branch strategy to handle multiple environments
+* CI/CD automation using GitHub Workflows, reusable workflows and a branch
+  strategy to handle multiple environments
 * Bicep templates to provision the required Azure services, with automated
   deployments
 * A single page application front-end built using modern technologies:
   TypeScript, HTML5, SASS, React; offering folders view, gallery, features to
   display pictures, play MP3s and videos
 * A clean API offering OpenAPI Documentation and supporting OpenID Connect
-* Support for access management using JWT Bearer authentication and Application
-  Roles (authentication and authorization strategies)
-* Safe handling of private files (access to files is controlled using temporary
-  shared access signatures for the Azure Blob Service)
+* Access management using JWT Bearer authentication
+  (tokens issued by Azure Active Directory)
+* Safe handling of private files: access to files is controlled using temporary
+  shared access signatures for the Azure Blob Service
 * Resizing of pictures, supporting common pictures formats
 * Logs collected using Application Insights, including detailed informations
-  about dependencies like queries made by SQLAlchemy on the PostgreSQL db
+  about dependencies, like queries made by SQLAlchemy on the PostgreSQL db
 * Database migrations handled using Alembic, and ORM provided by SQLAlchemy
 
 Since the project is open source and includes automation, it can be easily
-enhanced with the desided features.
+modified and enhanced with the desided features.
 
 # Considerations regarding access management
 
@@ -58,8 +58,8 @@ handle authorization in the SPA and the API.
 
 ## Deployment considerations
 The system is currently thought to be deployed in a instance of Azure App
-Service. It can be modified as desired, for example to be packed in Docker and
-published in Kubernetes or another kind of service.
+Service for Linux. It can be modified as desired, for example to be packed in
+Docker and published in Kubernetes or another kind of service.
 
 The project is structured to support multiple environments and deployments to
 environments using dedicated branches, and [reusable
@@ -80,12 +80,18 @@ and `Dev/Test` pricing tier for the App Service Plan for the **DEV**
 environment, and better services for the `TEST` and `PROD` environments. Adjust
 the `Bicep` parameters files as desired, to scale up or down the services. In
 the provided configuration, these two services are those generating the bigger
-costs. Since the API uses `SQLAlchemy` and database migrations with `Alembic`,
-it would be possible to easily replace the Azure Database for PostgreSQL with a
-Azure SQL database, reducing the costs of the database. However the provided
-project template uses PostgreSQL at the moment. In the future an example with
-Azure SQL might be provided, in addition, or in substitution of the PostgreSQL
-database.
+costs.
+
+## Considerations about App Registrations
+The best way to configure a Single Page Application and an API is to:
+* use two app registrations: one of the SPA, one of the API,
+* configure the SPA to be a client of the API (e.g. supporting `scopes`),
+* authenticate requests on the API using `access_token`s obtained during
+  sign-in on the SPA.
+
+However, for simplicity during the first set-up, the instructions show how
+to configure a single app registration used both by the SPA and the underlying
+API. **TODO???**
 
 ## Considerations about Azure subscriptions and credentials
 It is recommended to use two Azure subscriptions: one for the non-production
@@ -119,7 +125,9 @@ groups must be created before generating the credentials for the GitHub agents.
    workflow files to use `pincopallo` instead of `torino` (note that a bug in
    the GH reusable workflows doesn't allow to use dynamic input from env
    variables for called workflows, therefore it is necessary to write more than
-   once the project name)
+   once the project name [ref.
+   1](https://github.community/t/reusable-workflow-env-context-not-available-in-jobs-job-id-with/206111),
+   [ref. 2](https://github.com/actions/runner/issues/480))
 
 1. Create Azure credentials to enable automated deployments from GitHub Workflows.
    If you decide to use credentials scoped over exact resource groups, you will
@@ -142,5 +150,20 @@ groups must be created before generating the credentials for the GitHub agents.
 
 
 ## Considerations regarding the separation of the SPA and the API
-In code, the SPA and the API are completely separated. Meaning that is it
-possible to (TODO...)
+The SPA and the API are completely separated in code. Meaning that they are
+developed separately (which is good) and it is possible, for example, to deploy
+the SPA in a Azure Storage static website, while having the API in a different
+service. However, for simplicity, in the provided configuration the static
+files of the SPA are served by the same web application that contains the API.
+The clear separation of SPA and API also enable configuring two app
+registrations and properly authorize web requests on the API using
+`access_token`(s). Again, to keep the "Getting started" guide simple, the
+instructions explain how to configure a single app registration having an SPA
+platform (thus representing the whole web application: SPA and API together),
+rather than having two app registrations and configuring roles.
+
+For a more advanced setup, for example to enable the scenario of a CLI that
+provides interactive sign-in and uses the same API of the SPA, it is recommended
+to configure separate app registrations and scopes, so that the interactive
+sign-in in the SPA obtains an access token for the API (rather than only an
+`id_token`).
