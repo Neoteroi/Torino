@@ -1,7 +1,9 @@
 import uuid
 
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
-from sqlalchemy.dialects.postgresql import UUID
+
+# from sqlalchemy.dialects.postgresql import UUID
+from data.sql.uuid import UUID
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.orm import registry, relationship  # type: ignore
 from sqlalchemy.sql import expression
@@ -20,20 +22,25 @@ Base = mapper_registry.generate_base()
 # region mixins
 
 
-class utcnow(expression.FunctionElement):
+class UTCNow(expression.FunctionElement):
     type = DateTime()  # type: ignore
 
 
-@compiles(utcnow, "postgresql")
+@compiles(UTCNow, "postgresql")
 def pg_utcnow(element, compiler, **kw):
     return "TIMEZONE('utc', CURRENT_TIMESTAMP)"
 
 
+@compiles(UTCNow, "sqlite")
+def sqlite_utcnow(element, compiler, **kw):
+    return "CURRENT_TIMESTAMP"
+
+
 # https://docs.sqlalchemy.org/en/14/core/defaults.html#python-executed-functions
 class ETagMixin:
-    created_at = Column(DateTime, server_default=utcnow(), nullable=False)
-    updated_at = Column(DateTime, server_default=utcnow(), nullable=False)
-    etag = Column(String(50), server_default=utcnow(), nullable=False)
+    created_at = Column(DateTime, server_default=UTCNow(), nullable=False)
+    updated_at = Column(DateTime, server_default=UTCNow(), nullable=False)
+    etag = Column(String(50), server_default=UTCNow(), nullable=False)
 
 
 ETagMixin.created_at._creation_order = 9000  # type: ignore

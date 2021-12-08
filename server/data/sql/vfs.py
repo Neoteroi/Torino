@@ -15,7 +15,7 @@ from domain.vfs import (
 )
 
 from .dbmodel import NodeEntity
-from .mapping import map_optional_uuid
+from .mapping import get_uuid, map_optional_uuid
 
 
 def entity_to_image_data(entity: NodeEntity) -> Optional[FileImageData]:
@@ -33,8 +33,8 @@ def entity_to_image_data(entity: NodeEntity) -> Optional[FileImageData]:
 
 def node_entity_to_node(entity: NodeEntity) -> FileSystemNode:
     return FileSystemNode(
-        id=UUID(entity.id),
-        album_id=UUID(entity.album_id),
+        id=get_uuid(entity.id),
+        album_id=get_uuid(entity.album_id),
         parent_id=map_optional_uuid(entity.parent_id),
         name=entity.name,
         slug=entity.slug,

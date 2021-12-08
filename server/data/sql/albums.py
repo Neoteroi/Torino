@@ -1,17 +1,17 @@
 from typing import List, Optional
 from uuid import UUID
 
+from data.sql.mapping import get_uuid
+from domain.albums import Album, AlbumsDataProvider
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import select
-
-from domain.albums import Album, AlbumsDataProvider
 
 from .dbmodel import AlbumEntity
 
 
 def album_entity_to_album(entity: AlbumEntity) -> Album:
     return Album(
-        id=UUID(entity.id),
+        id=get_uuid(entity.id),
         storage_id=entity.storage_id,
         name=entity.name,
         slug=entity.slug,
