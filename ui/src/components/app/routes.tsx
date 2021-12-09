@@ -1,6 +1,7 @@
-import {getAlbumsPage} from "./albums";
-import {getAlbumPage} from "./album";
+import {getAboutPage} from "./about";
 import {getAccountPage} from "./account";
+import {getAlbumPage} from "./album";
+import {getAlbumsPage} from "./albums";
 import {ReactElement} from "react";
 import {User} from "../../service/user";
 
@@ -27,6 +28,11 @@ function _getRoutes(user: User): Route[] {
       path: "/account",
       exact: false,
       main: getAccountPage(user),
+    },
+    {
+      path: "/about",
+      exact: false,
+      main: getAboutPage(),
     },
   ];
 }

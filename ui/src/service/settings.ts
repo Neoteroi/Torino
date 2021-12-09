@@ -35,6 +35,14 @@ class ServiceSettings {
     return this._redirectURL;
   }
 
+  public get authEnabled(): boolean {
+    if (!this._clientId || !this._apiScope) {
+      return false;
+    }
+
+    return true;
+  }
+
   constructor() {
     this._apiURL = Settings.api_url;
     this._apiScope = Settings.api_scope;

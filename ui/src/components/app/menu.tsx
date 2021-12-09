@@ -1,5 +1,6 @@
 import AssignmentInd from "@material-ui/icons/AssignmentInd";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import InfoIcon from "@material-ui/icons/Info";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -50,6 +51,11 @@ export function getSecondaryMenu(): ReactElement {
       path: "/account",
       text: i().Menu.Account,
       icon: <AssignmentInd />,
+    },
+    {
+      path: "/about",
+      text: i().Menu.About,
+      icon: <InfoIcon />,
     },
   ]);
 }

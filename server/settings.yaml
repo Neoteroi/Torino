@@ -4,6 +4,10 @@
 # environmental variables, thanks to `essentials-configuration` package.
 # Refer to https://github.com/Neoteroi/essentials-configuration for more information.
 #
+# To override settings with env variables, use the "APP_" prefix followed by the same name.
+# For example, to configure `storage_account_key` with an env variable, configure one like:
+# APP_STORAGE_ACCOUNT_KEY="******"
+#
 # The ARM templates provided with the project template configure properly the application
 # settings, so nothing more needs to be done here.
 #
@@ -12,17 +16,30 @@ hsts: true
 
 show_error_details: false
 
-storage_account_name: "devasweeuwsa"
+# Provide a storage account name and key; these are the only required settings
+# to use the system
+storage_account_name: ""
 
-storage_account_key: "ueWYJeLdhDC1zEPRKF9IwYMqBPDoZSx+m+DsKSofP0+humqU4XEt6AvpWYF1HQxOKB3apQfLCPZGfVVyLVVXkw=="
+storage_account_key: ""
 
-db_connection_string: postgresql+asyncpg://postgres:postgres@localhost:5432/torino2
+# TODO: support storage_account_connection_string
+
+# example of local connection string for PostgreSQL:
+# db_connection_string: postgresql+asyncpg://webapi:superpassword@localhost:5432/torino2
+
+# by default, SQLite is configured for local development
+db_connection_string: sqlite+aiosqlite:///torino.db
 
 # Replace the following with an Application Insights' instrumentation key,
 # to enable collection of telemetries. The same value can be configured using
 # the environment variable APP_MONITORING_KEY
 monitoring_key: ""
 
+# To enable JWT Bearer authentication, provide audience and issuer configuration
 auth:
-  audience: "" # api://e9ee7140-519d-458c-9621-0b3e110ea5a3
-  issuer: "" # https://sts.windows.net/b62b317a-19c2-40c0-8650-2d9672324ac4/
+  audience: ""
+  issuer: ""
+# Example of authentication for an API in Azure Active Directory:
+# auth:
+#   audience: api://e9ee7140-519d-458c-9621-0b3e110ea5a3
+#   issuer: https://sts.windows.net/b62b317a-19c2-40c0-8650-2d9672324ac4/

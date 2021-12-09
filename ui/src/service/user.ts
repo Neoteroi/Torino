@@ -62,14 +62,21 @@ export class User {
     }
     return this.hasRole(role);
   }
+}
 
-  private getRolesBySuffix(suffix: string): string[] {
-    const roles: string[] = [];
-    for (const role of this._roles) {
-      if (role.startsWith(suffix)) {
-        roles.push(role.substr(suffix.length));
-      }
-    }
-    return roles;
+export class RootUser extends User {
+  constructor() {
+    super({
+      name: "root",
+      email: "root",
+      oid: "",
+      preferred_username: "root",
+      exp: -1,
+      roles: ["ADMIN"],
+    });
+  }
+
+  isExpired(): boolean {
+    return false;
   }
 }

@@ -1,10 +1,4 @@
 export const en = {
-  // key1: "value of key1 in en",
-  // interpolation: (what: string, how: string) => `${what} is ${how}`,
-  // dateFormat: (date: Date) =>
-  //   `The current date is ${formatDate(date, "MM/DD/YYYY")}`,
-  // keyWithCount: (count: number) => `${count} item${count === 1 ? "" : "s"}`,
-
   Errors: {
     CannotCopyOrMoveFolderIntoItself: {
       title: "A folder cannot be moved or copied into itself",
@@ -31,8 +25,16 @@ export const en = {
     NewAlbum: "New album",
   },
 
+  Info: {
+    NoAuthModeTitle: "Express mode",
+    NoAuthModeDescription: `The system is not configured to use OAuth
+      applications, it is therefore running without authentication.`,
+    SystemVersion: "System version",
+  },
+
   Menu: {
     Dashboard: "Albums",
     Account: "Account",
+    About: "About",
   },
 };
