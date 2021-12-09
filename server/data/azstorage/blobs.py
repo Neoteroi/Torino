@@ -15,7 +15,7 @@ from azure.storage.blob import (
 from core.errors import ConflictError
 from core.pools import PoolClient
 from domain.blobs import BlobsService, Container
-from domain.logs import ailog
+from domain.logs import log_dep
 from domain.settings import Settings
 
 
@@ -35,7 +35,7 @@ def _create_container(blob_client: BlobServiceClient, name: str) -> None:
         raise ConflictError("A container with the given name already exists")
 
 
-deplog = partial(ailog, "AzureStorage")
+log_az_dep = partial(log_dep, "AzureStorage")
 
 
 class AzureStorageBlobsService(BlobsService, PoolClient):
@@ -44,11 +44,11 @@ class AzureStorageBlobsService(BlobsService, PoolClient):
         self.blob_client = blob_client
         self.settings = settings
 
-    @deplog()
+    @log_az_dep()
     async def get_containers(self) -> List[Container]:
         return await self.run(_list_containers, self.blob_client)
 
-    @deplog()
+    @log_az_dep()
     async def create_container(self, name: str) -> None:
         return await self.run(_create_container, self.blob_client, name)
 

@@ -417,7 +417,7 @@ export default class FoldersPage extends Component<
   setEventListeners(): void {
     document.addEventListener("keydown", this.onGlobalKeyDown);
     document.addEventListener("mousedown", this.onGlobalClick);
-    document.addEventListener("wheel", this.onGlobalWheel);
+    document.addEventListener("wheel", this.onGlobalWheel, {passive: true});
   }
 
   unsetEventListeners(): void {

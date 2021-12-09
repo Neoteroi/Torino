@@ -6,6 +6,7 @@ import {
   InteractionRequiredAuthError,
 } from "@azure/msal-browser";
 import {userFromAccessToken} from "./tokens";
+import {startsWith} from "lodash";
 
 const app = new PublicClientApplication(msalConfig);
 
@@ -46,6 +47,27 @@ export function login(): Promise<User> {
         reject(error);
       });
   });
+}
+
+export function clearTokens(): void {
+  let key: string;
+  const keysToRemove: string[] = [];
+
+  for (key in storage) {
+    if (startsWith(key, "msal.")) {
+      keysToRemove.push(key);
+    }
+  }
+  for (key in keysToRemove) {
+    storage.removeItem(key);
+  }
+
+  storage.removeItem(TOKEN_STORAGE_KEY);
+}
+
+export function logout(): void {
+  app.logout();
+  clearTokens();
 }
 
 export function userFromStorage(): User | null {

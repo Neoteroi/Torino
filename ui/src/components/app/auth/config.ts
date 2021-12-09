@@ -20,13 +20,5 @@ export const msalConfig = {
 };
 
 export const loginRequest = {
-  scopes: [
-    "openid",
-    "profile",
-    "api://e9ee7140-519d-458c-9621-0b3e110ea5a3/user_impersonation",
-  ],
-};
-
-export const tokenRequest = {
-  scopes: ["api://e9ee7140-519d-458c-9621-0b3e110ea5a3/user_impersonation"],
+  scopes: ["openid", "profile", ServiceSettings.apiScope],
 };

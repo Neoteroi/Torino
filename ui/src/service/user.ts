@@ -1,5 +1,6 @@
 export interface UserOptions {
   name: string;
+  email: string;
   oid: string;
   preferred_username: string;
   exp: number;
@@ -11,8 +12,12 @@ export class User {
   private _roles: string[];
   private _superUser: boolean;
 
+  get name(): string {
+    return this.options?.name || "";
+  }
+
   get email(): string {
-    return this.options?.preferred_username || "";
+    return this.options?.email || "";
   }
 
   get options(): UserOptions | null {

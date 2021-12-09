@@ -1,12 +1,18 @@
 import React, {Component, ReactElement} from "react";
 import {User} from "../../service/user";
 import {ROLES} from "../../service/roles";
+import {Button} from "@material-ui/core";
+import {logout} from "./auth";
 
 export interface AccountProps {
   user: User;
 }
 
 export default class Account extends Component<AccountProps> {
+  async logout(): Promise<void> {
+    logout();
+  }
+
   render(): ReactElement {
     const {user} = this.props;
     return (
@@ -25,14 +31,17 @@ export default class Account extends Component<AccountProps> {
             <dl>
               {user.roles.map((role) => {
                 return (
-                  <>
+                  <React.Fragment key={role}>
                     <dt>{ROLES[role as keyof typeof ROLES].displayName}</dt>
                     <dd>{ROLES[role as keyof typeof ROLES].description}</dd>
-                  </>
+                  </React.Fragment>
                 );
               })}
             </dl>
           )}
+        </section>
+        <section className="log-out-region">
+          <Button onClick={() => this.logout()}>Sign-out</Button>
         </section>
       </div>
     );

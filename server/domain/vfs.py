@@ -11,7 +11,7 @@ from slugify import slugify
 
 from core.errors import AcceptedExceptionWithData, PreconfitionFailed
 from core.pathutils import DEFAULT_MIME, get_file_extension_from_name
-from domain.logs import ailog
+from domain.logs import log_dep
 from domain.pictures import PicturesHandler
 
 
@@ -182,7 +182,7 @@ class FileSystemHandler:
 
         return parts
 
-    @ailog()
+    @log_dep()
     async def process_image(
         self, datum: CreateNodeInput, container_name: str, file_extension: str
     ) -> FileImageData:

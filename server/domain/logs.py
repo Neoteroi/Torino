@@ -1,3 +1,4 @@
+import os
 from contextlib import contextmanager
 from functools import wraps
 
@@ -32,14 +33,18 @@ def operation_context(component, operation_name, *args, **kwargs):
             raise
 
 
-def ailog(component="Service"):
+def log_dep(component="Service"):
     """
-    Logs a dependency.
+    Wraps a function to log each call as a dependency in Application Insights.
     """
 
     def ailog_decorator(fn):
         @wraps(fn)
         async def wrapper(self, *args, **kwargs):
+            # if the connection string is not configured, call the function directly
+            if "APPLICATIONINSIGHTS_CONNECTION_STRING" not in os.environ:
+                return await fn(self, *args, **kwargs)
+
             with operation_context(component, fn.__name__, *args, **kwargs):
                 return await fn(self, *args, **kwargs)
 

@@ -11,6 +11,7 @@ export interface JwtToken {
   nbf: number;
   nonce: string;
   oid: string;
+  email: string;
   preferred_username: string;
   roles: string[];
 }

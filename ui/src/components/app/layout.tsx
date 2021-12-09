@@ -14,6 +14,7 @@ import {
   Divider,
   List,
 } from "@material-ui/core";
+import {UserContext} from "./user-context";
 // import SearchBar from "../common/search-bar";
 
 export interface LayoutProps {
@@ -93,18 +94,11 @@ export default class Layout extends Component<LayoutProps, LayoutState> {
                 <div>
                   <nav className="ui-menu-parent" role="navigation">
                     <ul className="ui-menu">
-                      {/*
-                      <li>
-                        <span tabIndex={0}>
-                          <AccountCircle />
-                        </span>
-                        <ul className="dropdown anchor-right">
-                          <li onClick={() => logout()}>
-                            <span tabIndex={0}>Logout</span>
-                          </li>
-                        </ul>
+                      <li className="user-email-summary">
+                        <UserContext.Consumer>
+                          {(user) => <span>{user.email}</span>}
+                        </UserContext.Consumer>
                       </li>
-                      */}
                     </ul>
                   </nav>
                 </div>

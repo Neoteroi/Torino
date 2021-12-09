@@ -99,6 +99,12 @@
   }
 }
 
+@media (max-width: 600px) {
+  .user-email-summary {
+    display: none !important;
+  }
+}
+
 @media (min-width: 600px) {
   #layout {
     .drawer-toggle-btn {

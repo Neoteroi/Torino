@@ -1,17 +1,26 @@
 interface SettingsFile {
   api_url: string;
+  api_scope: string;
   client_id: string;
   client_authority: string;
 }
 
+// see settings.js
+declare const Settings: SettingsFile;
+
 class ServiceSettings {
   private _apiURL: string;
+  private _apiScope: string;
   private _clientId: string;
   private _authority: string;
   private _redirectURL: string;
 
   public get apiURL(): string {
     return this._apiURL;
+  }
+
+  public get apiScope(): string {
+    return this._apiScope;
   }
 
   public get clientId(): string {
@@ -27,20 +36,10 @@ class ServiceSettings {
   }
 
   constructor() {
-    const request = new XMLHttpRequest();
-    // false makes the request sync
-    request.open("GET", "/settings.json", false);
-    request.send(null);
-
-    if (request.status === 200) {
-      const data = JSON.parse(request.responseText) as SettingsFile;
-      this._apiURL = data.api_url;
-      this._clientId = data.client_id;
-      this._authority = data.client_authority;
-    } else {
-      throw new Error("Failed to load /settings.json");
-    }
-
+    this._apiURL = Settings.api_url;
+    this._apiScope = Settings.api_scope;
+    this._clientId = Settings.client_id;
+    this._authority = Settings.client_authority;
     this._redirectURL = window.location.origin;
   }
 }
