@@ -2,43 +2,85 @@
 Torino is a media storage explorer for Azure created by [Roberto Prevato](https://github.com/RobertoPrevato),
 consisting of:
 
-* a back-end API built with BlackSheep, using a PostgreSQL database in Azure
-  and other services to provide the storage and administration features
+* a back-end API built with BlackSheep, providing the necessary features to
+  handle storage containers and a virtual file system
 * a front-end Single Page Application enabling interactive sign-in, offering
-  an administrative interface to configure containers of files, upload files,
+  an administrative interface to configure containers, upload files,
   and features to navigate through the virtual file system files
   (e.g. picture gallery, players for videos and mp3)
 
 Using this project is possible to provision a private media storage in Azure,
 in a few minutes. :sparkles: :cake:
 
+Torino provides two working modes: **Express**, and **Normal**.
+
+| Mode        | Description                                                                                                                                                                                                                                                                                   | Use case                                                                                                                                                                                                                                                                                                                                     |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Express** | Doesn't require any setup, it only requires a valid connection string to an Azure Storage Account. Uses a SQLite database. Can be started in seconds, using the provided Docker image.                                                                                                        | Ideal for personal use and to try Torino, doesn't generate any cost.                                                                                                                                                                                                                                                                         |
+| **Normal**  | A full web application integrated with Azure Active Directory, using Application Insights, alerts configuration, and a PostgreSQL database. It requires configuring app registrations in Azure Active Directory, secrets in GitHub for the first deployment, and using an Azure Subscription. | Ideal to have a media storage accessible at a public URL, requiring authentication, that can be shared with other people. Generates costs: in the provided configuration, especially for the Azure Database for PostgreSQL and the App Service Plan (of course, the app can be modified to be hosted in Docker and other kinds of services). |
+
 ---
 
-The project is a work-in-progress and by no mean complete, it still lacks
-several features. However, Torino is ready for use and provides an advanced
-project template, featuring:
+The project is a work-in-progress and by no mean complete. However, Torino is
+ready for use and provides complex features:
 
-* CI/CD automation using GitHub Workflows, reusable workflows and a branch
-  strategy to handle multiple environments
-* Bicep templates to provision the required Azure services, with automated
-  deployments
+* Ability to run a Docker container locally (Express mode), requiring only a
+  Storage Account
 * A single page application front-end built using modern technologies:
   TypeScript, HTML5, SASS, React; offering folders view, gallery, features to
   display pictures, play MP3s and videos
 * A clean API offering OpenAPI Documentation and supporting OpenID Connect
-* Access management using JWT Bearer authentication
-  (tokens issued by Azure Active Directory)
+* CI/CD automation using GitHub Workflows, reusable workflows and a branch
+  strategy to handle multiple environments
+* Bicep templates to provision the required Azure services, with automated
+  deployments
+* Access management using JWT Bearer authentication (tokens issued by Azure
+  Active Directory)
 * Safe handling of private files: access to files is controlled using temporary
   shared access signatures for the Azure Blob Service
 * Resizing of pictures, supporting common pictures formats
 * Logs collected using Application Insights, including detailed informations
-  about dependencies, like queries made by SQLAlchemy on the PostgreSQL db
+  about dependencies, like queries made by SQLAlchemy
 * Database migrations handled using Alembic, and ORM provided by SQLAlchemy
+  (uses code-first and has built-in support for PostgreSQL and SQLite)
 
 Since the project is open source and includes automation, it can be easily
 modified and enhanced with the desided features.
 
-# Considerations regarding access management
+# Express mode
+
+The recommended way to try Torino in Express mode is using the provided Docker
+image:
+
+```bash
+docker run -p 8080:80 \
+  --name "torino-test" \
+  -e 'APP_STORAGE_CONN_STRING=************' \
+  -d roberto.prevato/torino
+```
+
+Otherwise, it is necessary to clone the repository, prepare a Python virtual
+environment, build the single page application using `yarn`.
+
+# Normal mode
+
+Using the system in Normal mode provides the full set of features implemented
+in the system, but it requires going through several configuration steps, for
+the first-time setup.
+
+* Requires forking the project or using the template feature
+* Secrets must be configured
+
+<!--
+* access management using Azure Active Directory
+* interactive sign-in in the SPA
+* JWT Bearer authentication in the API
+* application telemetries using Azure Application Insights
+* data stored in a managed Azure Database for PostgreSQL
+* CI/CD using GitHub Workflows
+-->
+
+## Considerations regarding access management
 
 The system is thought to be used with Azure Active Directory and not allow
 sign-up for new users, however it can be easily modified to be integrated with

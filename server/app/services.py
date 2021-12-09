@@ -6,7 +6,6 @@ handlers.
 For more information and documentation, see:
     https://www.neoteroi.dev/blacksheep/dependency-injection/
 """
-import os
 from typing import Tuple
 
 from configuration.common import Configuration
@@ -30,12 +29,6 @@ def configure_services(
     container.add_instance(configuration)
 
     settings = Settings.from_configuration(configuration)
-
-    # set an env variable that is used internally by
-    # opencensus.ext.azure.trace_exporter.AzureExporter
-    os.environ[
-        "APPLICATIONINSIGHTS_CONNECTION_STRING"
-    ] = f"InstrumentationKey={settings.monitoring_key}"
 
     container.add_instance(settings)
 

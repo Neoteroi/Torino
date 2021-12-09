@@ -40,6 +40,7 @@ def build_app() -> Application:
         show_error_details=configuration.show_error_details,
     )
 
+    configure_logging(app, settings)
     use_sqlalchemy(app, connection_string=configuration.db_connection_string)
 
     app.on_start += context.initialize
@@ -54,7 +55,6 @@ def build_app() -> Application:
 
     configure_auth(app, configuration)
     configure_error_handlers(app)
-    configure_logging(app, settings)
 
     ensure_folder("app/static")
     app.serve_files("app/static", fallback_document="index.html", allow_anonymous=True)

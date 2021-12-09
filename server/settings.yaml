@@ -18,10 +18,11 @@ storage_account_key: "ueWYJeLdhDC1zEPRKF9IwYMqBPDoZSx+m+DsKSofP0+humqU4XEt6AvpWY
 
 db_connection_string: postgresql+asyncpg://postgres:postgres@localhost:5432/torino2
 
-# Replace the following with the Application Insights' instrumentation key
-# from your DEV environment, so you can see telemetries collected also when developing locally
-monitoring_key: "77166e6a-45ea-4e4e-b079-7e54fee6818c"
+# Replace the following with an Application Insights' instrumentation key,
+# to enable collection of telemetries. The same value can be configured using
+# the environment variable APP_MONITORING_KEY
+monitoring_key: ""
 
 auth:
-  audience: api://e9ee7140-519d-458c-9621-0b3e110ea5a3
-  issuer: https://sts.windows.net/b62b317a-19c2-40c0-8650-2d9672324ac4/
+  audience: "" # api://e9ee7140-519d-458c-9621-0b3e110ea5a3
+  issuer: "" # https://sts.windows.net/b62b317a-19c2-40c0-8650-2d9672324ac4/
