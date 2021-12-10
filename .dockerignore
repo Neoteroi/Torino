@@ -1,4 +1,7 @@
-node_modules/
+ui/node_modules/
+server/venv/
+server/.env/
+server/env/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
