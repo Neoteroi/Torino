@@ -89,5 +89,5 @@ tomli==1.2.2
 typing_extensions==4.0.0
 urllib3==1.26.7
 uvicorn==0.15.0
-uvloop==0.16.0
+uvloop==0.16.0; platform_system != "Windows"
 zipp==3.6.0

@@ -190,6 +190,6 @@ class AlbumsHandler:
             public=data.public,
         )
 
-        await self.albums_data_provider.create_album(album)
         await self.blobs_service.create_container(str(album.id))
+        await self.albums_data_provider.create_album(album)
         return album
