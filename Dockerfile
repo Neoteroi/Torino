@@ -37,7 +37,6 @@ RUN python -m venv venv && . venv/bin/activate && pip install --upgrade pip && p
 
 # create a SQLite database anyway with the right structure (thanks to Alembic)
 RUN . venv/bin/activate && DB_MIGCONNSTRING="sqlite:///./torino.db" alembic upgrade head
-# CMD . venv/bin/activate && uvicorn server:app --port 8080 --log-level info
 
 FROM python:3.10.1-slim
 WORKDIR /home

@@ -2,21 +2,21 @@
 Torino is a media storage explorer for Azure created by [Roberto Prevato](https://github.com/RobertoPrevato),
 consisting of:
 
-* a back-end API built with BlackSheep, providing the necessary features to
+* a back-end API that provides the necessary features to
   handle storage containers and a virtual file system
-* a front-end Single Page Application enabling interactive sign-in, offering
+* a front-end Single Page Application that provides
   an administrative interface to configure containers, upload files,
-  and features to navigate through the virtual file system files
-  (e.g. picture gallery, players for videos and mp3)
+  navigate through the virtual file system files, and also
+  interactive sign-in through Azure Active Directory
 
 Using this project is possible to provision a private media storage in Azure,
 in a few minutes. :sparkles: :cake:
 
-Torino provides two working modes: **Express**, and **Normal**.
+Torino provides two working modes: **Express** and **Normal**.
 
 | Mode        | Description                                                                                                                                                                                                                                                                                   | Use case                                                                                                                                                                                                                                                                                                                                     |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Express** | Doesn't require any setup, it only requires a valid connection string to an Azure Storage Account. Uses a SQLite database. Can be started in seconds, using the provided Docker image.                                                                                                        | Ideal for personal use and to try Torino, doesn't generate any cost.                                                                                                                                                                                                                                                                         |
+| **Express** | Doesn't require any setup, it only requires credentials to an Azure Storage Account. Uses a SQLite database. Can be started within seconds, using the provided Docker image.                                                                                                                  | Ideal for personal use and to try Torino, doesn't generate any cost.                                                                                                                                                                                                                                                                         |
 | **Normal**  | A full web application integrated with Azure Active Directory, using Application Insights, alerts configuration, and a PostgreSQL database. It requires configuring app registrations in Azure Active Directory, secrets in GitHub for the first deployment, and using an Azure Subscription. | Ideal to have a media storage accessible at a public URL, requiring authentication, that can be shared with other people. Generates costs: in the provided configuration, especially for the Azure Database for PostgreSQL and the App Service Plan (of course, the app can be modified to be hosted in Docker and other kinds of services). |
 
 ---
@@ -24,8 +24,8 @@ Torino provides two working modes: **Express**, and **Normal**.
 The project is a work-in-progress and by no mean complete. However, Torino is
 ready for use and provides complex features:
 
-* Ability to run a Docker container locally (Express mode), requiring only a
-  Storage Account
+* Ability to run a Docker container, requiring only a
+  Storage Account (Express mode)
 * A single page application front-end built using modern technologies:
   TypeScript, HTML5, SASS, React; offering folders view, gallery, features to
   display pictures, play MP3s and videos
@@ -53,10 +53,10 @@ The recommended way to try Torino in Express mode is using the provided Docker
 image:
 
 ```bash
-docker run -p 8080:80 \
-  --name "torino-test" \
-  -e 'APP_STORAGE_CONN_STRING=************' \
-  -d roberto.prevato/torino
+docker run -p 8080:8080 \
+  -e APP_STORAGE_ACCOUNT_NAME="<NAME>" \
+  -e APP_STORAGE_ACCOUNT_KEY="<KEY>" \
+  roberto.prevato/torino
 ```
 
 Otherwise, it is necessary to clone the repository, prepare a Python virtual
@@ -209,3 +209,14 @@ provides interactive sign-in and uses the same API of the SPA, it is recommended
 to configure separate app registrations and scopes, so that the interactive
 sign-in in the SPA obtains an access token for the API (rather than only an
 `id_token`).
+
+## TODO???
+
+Torino also provides the following persistence layers for the metadata that is necessary to
+handle the virtual file system:
+
+| Persistence layer             | Description | Use case |
+| ----------------------------- | ----------- | -------- |
+| **Storage Account Table API** | ...         |          |
+| **SQLite**                    | ...         |          |
+| **PostgreSQL**                | ...         |          |
