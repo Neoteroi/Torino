@@ -17,3 +17,5 @@ https://docs.docker.com/storage/
 # supportare Azure Storage Table API? - questo ha senso, però non offre supporto per Search o Count!
 
 # usare async API per Python?
+
+# arch diagram, components
