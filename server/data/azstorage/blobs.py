@@ -4,13 +4,9 @@ from functools import partial
 from typing import List, cast
 
 from azure.core.exceptions import ResourceExistsError
-from azure.storage.blob import (
-    BlobSasPermissions,
-    BlobServiceClient,
-    ContainerSasPermissions,
-    generate_blob_sas,
-    generate_container_sas,
-)
+from azure.storage.blob import (BlobSasPermissions, BlobServiceClient,
+                                ContainerSasPermissions, generate_blob_sas,
+                                generate_container_sas)
 
 from core.errors import ConflictError
 from core.pools import PoolClient

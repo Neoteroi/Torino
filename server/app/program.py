@@ -1,15 +1,15 @@
 import os
 
 from blacksheep.server.application import Application
-from blacksheepsqlalchemy import use_sqlalchemy
 from configuration.common import Configuration, ConfigurationBuilder
 from configuration.env import EnvironmentVariables
 from configuration.yaml import YAMLFile
-from core.events import ServicesRegistrationContext
 from essentials.folders import ensure_folder
 
 import app.controllers  # noqa
 from app.security.httpsmiddleware import HSTSMiddleware
+from core.events import ServicesRegistrationContext
+from domain.settings import Settings
 
 from .auth import configure_auth
 from .di import dependency_injection_middleware
@@ -31,17 +31,16 @@ def load_configuration() -> Configuration:
 
 def build_app() -> Application:
     configuration = load_configuration()
+    settings = Settings.from_configuration(load_configuration())
     context: ServicesRegistrationContext
-    services, context, settings = configure_services(configuration)
-    configuration: Configuration
 
     app = Application(
-        services=services,
         show_error_details=configuration.show_error_details,
     )
 
+    context = configure_services(app, settings)
+
     configure_logging(app, settings)
-    use_sqlalchemy(app, connection_string=configuration.db_connection_string)
 
     app.on_start += context.initialize
     app.on_stop += context.dispose
@@ -53,7 +52,7 @@ def build_app() -> Application:
     if configuration.hsts:
         app.middlewares.append(HSTSMiddleware())
 
-    configure_auth(app, configuration)
+    configure_auth(app, settings)
     configure_error_handlers(app)
 
     ensure_folder("app/static")

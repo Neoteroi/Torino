@@ -1,4 +1,5 @@
 import pytest
+
 from core.stringutils import split_pairs_eqsc
 
 

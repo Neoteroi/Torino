@@ -6,13 +6,12 @@ handlers.
 For more information and documentation, see:
     https://www.neoteroi.dev/blacksheep/dependency-injection/
 """
-from typing import Tuple
-
-from configuration.common import Configuration
-from rodi import Container
+from blacksheep.server.application import Application
+from blacksheepsqlalchemy import use_sqlalchemy
 
 from core.events import ServicesRegistrationContext
-from data.azstorage.services import register_az_storage_services
+from data.azstorage.services import (register_az_storage_services,
+                                     use_storage_table)
 from data.sql.services import register_sql_services
 from domain.context import register_user_services
 from domain.services import register_handlers
@@ -20,23 +19,25 @@ from domain.settings import Settings
 
 
 def configure_services(
-    configuration: Configuration,
-) -> Tuple[Container, ServicesRegistrationContext, Settings]:
-    container = Container()
+    app: Application,
+    settings: Settings,
+) -> ServicesRegistrationContext:
+    container = app.services
 
     context = ServicesRegistrationContext()
-
-    container.add_instance(configuration)
-
-    settings = Settings.from_configuration(configuration)
 
     container.add_instance(settings)
 
     register_handlers(container, context)
+
+    if settings.db_connection_string:
+        use_sqlalchemy(app, connection_string=settings.db_connection_string)
+    else:
+        use_storage_table(app, settings)
 
     register_sql_services(container)
     register_az_storage_services(container, settings)
 
     register_user_services(container)
 
-    return container, context, settings
+    return context
