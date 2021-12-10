@@ -209,14 +209,3 @@ provides interactive sign-in and uses the same API of the SPA, it is recommended
 to configure separate app registrations and scopes, so that the interactive
 sign-in in the SPA obtains an access token for the API (rather than only an
 `id_token`).
-
-## TODO???
-
-Torino also provides the following persistence layers for the metadata that is necessary to
-handle the virtual file system:
-
-| Persistence layer             | Description | Use case |
-| ----------------------------- | ----------- | -------- |
-| **Storage Account Table API** | ...         |          |
-| **SQLite**                    | ...         |          |
-| **PostgreSQL**                | ...         |          |
