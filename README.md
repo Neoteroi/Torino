@@ -1,5 +1,5 @@
 # Torino
-Torino is a media storage explorer for Azure created by [Roberto Prevato](https://github.com/RobertoPrevato),
+Torino is a files storage explorer created by [Roberto Prevato](https://github.com/RobertoPrevato),
 consisting of:
 
 * a back-end API that provides the necessary features to
@@ -7,7 +7,8 @@ consisting of:
 * a front-end SPA that provides an administrative interface to configure
   containers, upload files, navigate through the virtual file system
 
-Using this project is possible to provision a private media storage in Azure,
+Using this project is possible to provision a private files explorer using
+[Azure Storage Account](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview),
 in a few minutes. :sparkles: :cake:
 
 Torino provides two working modes: **Express** and **Normal**.
@@ -25,8 +26,9 @@ ready for use and provides complex features:
 * Ability to run the application in a Docker container, requiring only a
   Storage Account (Express mode)
 * A single page application front-end built using modern technologies:
-  TypeScript, HTML5, SASS, React; offering folders view, features to
-  display pictures, play MP3s and videos
+  TypeScript, HTML5, SASS, React; offering folders view, a photo gallery
+  implemented with PhotoSwipe, features to display pictures, play MP3s and
+  videos
 * A clean API offering OpenAPI Documentation and supporting OpenID Connect
 * CI/CD automation using GitHub Workflows, reusable workflows and a branch
   strategy to handle multiple environments
