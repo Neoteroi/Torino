@@ -3,3 +3,6 @@ server/venv/
 server/.env/
 server/env/
 server/torino.db
+docs/
+.github/
+infrastructure/
