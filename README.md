@@ -43,6 +43,8 @@ ready for use and provides complex features:
   about dependencies, like queries made by SQLAlchemy
 * Database migrations handled using Alembic, and ORM provided by SQLAlchemy
   (uses code-first and has built-in support for PostgreSQL and SQLite)
+* As alternative to the SQL relational dbs mentioned above, it can be configured
+  to use a Table API (Storage Account is tested, but it should also support CosmosDB)
 
 Since the project is open source and includes automation, it can be easily
 modified and enhanced with the desided features.
@@ -56,12 +58,27 @@ image:
 docker run -p 8080:80 \
   -e APP_STORAGE_ACCOUNT_NAME="<NAME>" \
   -e APP_STORAGE_ACCOUNT_KEY="<KEY>" \
-  roberto.prevato/torino
+  robertoprevato/torino
 ```
 
 The system in Express mode runs without users' authentication, and can be
 immediately used to start creating containers and uploading files to the
-storage.
+storage. By default all information is stored in the provided Storage Account
+(Table and Blob services).
+
+To include the integration with an Azure Application Insights service, use
+the following environmental variable:
+
+```bash
+-e APP_MONITORING_KEY="<INSTRUMENTATION_KEY>"
+```
+
+To use a SQLite database within the container itself, instead of the
+Azure Storage Table API, add the following variable:
+
+```bash
+-e APP_DB_CONNECTION_STRING="sqlite+aiosqlite:///torino.db"
+```
 
 # Normal mode
 
@@ -138,3 +155,13 @@ auth:
    that offers the API, this can be modified as desired.
 
 ---
+
+## Supported persistence layers
+Torino supports the following persistence layers for the virtual file system
+(virtual folders tree and file nodes):
+
+| Persistence layer | Description                                                                                                                                                                                                                                                                 |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Table API**     | This is the default option when starting the application locally and in Express mode. The Table Service of the same Storage Account is used to store the necessary information to handle the virtual file system. This is the default option when starting the application. |
+| **PostgreSQL**    | The system was originally designed to work with a PostgreSQL database. For this reason, the provided Bicep template and GitHub Workflows create an instance of Azure Database for PostgreSQL. The service can be expensive for personal use.                                |
+| **SQLite**        | SQLite can be used instead of PostgreSQL, using a different connection string.                                                                                                                                                                                              |

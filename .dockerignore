@@ -1,4 +1,6 @@
 ui/node_modules/
+server/.vscode
+server/workspace.code-workspace
 server/venv/
 server/.env/
 server/env/
@@ -6,3 +8,6 @@ server/torino.db
 docs/
 .github/
 infrastructure/
+**/*.pyc
+**/*.md
+**/__pycache__

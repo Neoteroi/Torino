@@ -56,10 +56,18 @@ def use_storage_table(
 
         container.add_instance(table_service_client)
 
+        await table_service_client.create_table_if_not_exists(
+            TableAPIAlbumsDataProvider.table_name
+        )
+        await table_service_client.create_table_if_not_exists(
+            TableAPIFileSystemDataProvider.table_name
+        )
+
         await table_service_client.__aenter__()
 
     async def dispose_client():
-        await table_service_client.__aexit__()
+        if table_service_client is not None:
+            await table_service_client.__aexit__()
 
     context.initialize += initialize_tables
     context.dispose += dispose_client
