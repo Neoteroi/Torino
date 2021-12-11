@@ -14,14 +14,13 @@ are not familiar with CI/CD, read the following article for an overview:
 5. Run the `server` build GitHub Workflow: this builds the application and
    deploys it to the various environments
 
-## Disclaimer
 The instructions provided here illustrate the concepts using `Bash` scripts,
 describing how to create a DEV environment in Azure: the same concepts can be
 applied to provision other environments (e.g. TEST and PROD).
 
 ### Choosing a project name
 
-The default project name for this demo is `Venezia`. To create a new deployment
+The default name of the project is `Torino`. To create a new deployment
 of this service, it is necessary to choose a different name.
 
 Since Azure provides default domains for the services, the project name must be
@@ -31,15 +30,7 @@ app service at the URL: `https://dev-example.azurewebsites.net`, if this name
 is available.
 
 The name should be set in `./infrastructure/template.bicep`, editing the
-parameter named `projectName` under `parameters`.
-
-```json
-    "projectName": {
-      "type": "string",
-      "minLength": 2,
-      "defaultValue": "venezia"
-    },
-```
+`projectName` `parameter`.
 
 ### Configuring GitHub Secrets
 

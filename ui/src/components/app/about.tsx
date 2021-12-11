@@ -3,6 +3,7 @@ import React, {Component, ReactElement} from "react";
 import ServiceSettings from "../../service/settings";
 import {i} from "../../locale";
 import {logout} from "./auth";
+import {BaseURL} from "../../service/api";
 
 export default class About extends Component {
   async logout(): Promise<void> {
@@ -23,8 +24,12 @@ export default class About extends Component {
                 https://github.com/Neoteroi/Torino
               </a>
             </dd>
-            <dt>API URL</dt>
-            <dd>{ServiceSettings.apiURL}</dd>
+            <dt>API</dt>
+            <dd>
+              <a href={BaseURL + "/docs"} target="_blank" rel="noreferrer">
+                OpenAPI Documentation
+              </a>
+            </dd>
           </dl>
           <br />
           {ServiceSettings.authEnabled === false && (

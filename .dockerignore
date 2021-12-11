@@ -2,3 +2,4 @@ ui/node_modules/
 server/venv/
 server/.env/
 server/env/
+server/torino.db

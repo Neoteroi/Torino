@@ -20,4 +20,8 @@ class BlobsController(ApiController):
     async def initialize_upload(
         self, data: InitializeUploadInput
     ) -> InitializeUploadOutput:
+        """
+        Initializes a file upload operation, providing the client with a temporary
+        access token that can be used to upload the file directly to Blob Storage.
+        """
         return await self.manager.initialize_upload(data)

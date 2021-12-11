@@ -1,8 +1,11 @@
 import React, {Component, ReactElement} from "react";
-import {User} from "../../service/user";
-import {ROLES} from "../../service/roles";
+import ServiceSettings from "../../service/settings";
 import {Button} from "@material-ui/core";
 import {logout} from "./auth";
+import {ROLES} from "../../service/roles";
+import {User} from "../../service/user";
+import AlertPanel, {AlertSeverity} from "../common/alert";
+import {i} from "../../locale";
 
 export interface AccountProps {
   user: User;
@@ -20,7 +23,7 @@ export default class Account extends Component<AccountProps> {
         <section>
           <h2>Information</h2>
           <dl>
-            <dt>Email</dt>
+            <dt>User</dt>
             <dd>{user.email}</dd>
           </dl>
         </section>
@@ -40,9 +43,18 @@ export default class Account extends Component<AccountProps> {
             </dl>
           )}
         </section>
-        <section className="log-out-region">
-          <Button onClick={() => this.logout()}>Sign-out</Button>
-        </section>
+        {ServiceSettings.authEnabled === false && (
+          <AlertPanel
+            title={i().Info.NoAuthModeTitle}
+            message={i().Info.NoAuthModeDescription}
+            severity={AlertSeverity.info}
+          />
+        )}
+        {ServiceSettings.authEnabled && (
+          <section className="log-out-region">
+            <Button onClick={() => this.logout()}>Sign-out</Button>
+          </section>
+        )}
       </div>
     );
   }

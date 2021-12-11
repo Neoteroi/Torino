@@ -14,20 +14,20 @@ in a few minutes. :sparkles: :cake:
 
 Torino provides two working modes: **Express** and **Normal**.
 
-| Mode        | Description                                                                                                                                                                                                                                                                                   | Use case                                                                                                                                                                                                                                                                                                                                     |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Express** | Doesn't require any setup, it only requires credentials to an Azure Storage Account. Uses a SQLite database. Can be started within seconds, using the provided Docker image.                                                                                                                  | Ideal for personal use and to try Torino, doesn't generate any cost.                                                                                                                                                                                                                                                                         |
-| **Normal**  | A full web application integrated with Azure Active Directory, using Application Insights, alerts configuration, and a PostgreSQL database. It requires configuring app registrations in Azure Active Directory, secrets in GitHub for the first deployment, and using an Azure Subscription. | Ideal to have a media storage accessible at a public URL, requiring authentication, that can be shared with other people. Generates costs: in the provided configuration, especially for the Azure Database for PostgreSQL and the App Service Plan (of course, the app can be modified to be hosted in Docker and other kinds of services). |
+| Mode        | Description                                                                                                                                                                                                                                                                                                                      | Use case                                                                                                                                                                                                                                                                                                                                     |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Express** | It only requires credentials to an Azure Storage Account, having CORS enabled for the Blob Service. By default it uses the Table API in the Storage Account to store information for the virtual file system, but it can be configured to use a SQLite database. Can be started within seconds, using the provided Docker image. | Ideal for personal use and to try Torino, doesn't generate any cost, besides the storage account. It is also possible to enable Application Insights on the service.                                                                                                                                                                         |
+| **Normal**  | A full web application integrated with Azure Active Directory, using Application Insights, alerts configuration, and a PostgreSQL database. It requires configuring app registrations in Azure Active Directory, secrets in GitHub for the first deployment.                                                                     | Ideal to have a media storage accessible at a public URL, requiring authentication, that can be shared with other people. Generates costs: in the provided configuration, especially for the Azure Database for PostgreSQL and the App Service Plan (of course, the app can be modified to be hosted in Docker and other kinds of services). |
 
 ---
 
 The project is a work-in-progress and by no mean complete. However, Torino is
 ready for use and provides complex features:
 
-* Ability to run a Docker container, requiring only a
-  Storage Account (Express mode)
+* Ability to run a Docker container, requiring only a Storage Account (Express
+  mode)
 * A single page application front-end built using modern technologies:
-  TypeScript, HTML5, SASS, React; offering folders view, gallery, features to
+  TypeScript, HTML5, SASS, React; offering folders view, features to
   display pictures, play MP3s and videos
 * A clean API offering OpenAPI Documentation and supporting OpenID Connect
 * CI/CD automation using GitHub Workflows, reusable workflows and a branch
@@ -49,18 +49,19 @@ modified and enhanced with the desided features.
 
 # Express mode
 
-The recommended way to try Torino in Express mode is using the provided Docker
+The fastest way to try Torino in Express mode is using the provided Docker
 image:
 
 ```bash
-docker run -p 8080:8080 \
+docker run -p 8080:80 \
   -e APP_STORAGE_ACCOUNT_NAME="<NAME>" \
   -e APP_STORAGE_ACCOUNT_KEY="<KEY>" \
   roberto.prevato/torino
 ```
 
-Otherwise, it is necessary to clone the repository, prepare a Python virtual
-environment, build the single page application using `yarn`.
+The system in Express mode runs without users' authentication, and can be
+immediately used to start creating containers and uploading files to the
+storage.
 
 # Normal mode
 
@@ -68,93 +69,16 @@ Using the system in Normal mode provides the full set of features implemented
 in the system, but it requires going through several configuration steps, for
 the first-time setup.
 
-* Requires forking the project or using the template feature
-* Secrets must be configured
+## How to provision an instance of the system in normal mode
 
-<!--
-* access management using Azure Active Directory
-* interactive sign-in in the SPA
-* JWT Bearer authentication in the API
-* application telemetries using Azure Application Insights
-* data stored in a managed Azure Database for PostgreSQL
-* CI/CD using GitHub Workflows
--->
+The following instructions provide an overview of the necessary steps to use
+all the features provided in this repository.
 
-## Considerations regarding access management
-
-The system is thought to be used with Azure Active Directory and not allow
-sign-up for new users, however it can be easily modified to be integrated with
-other identity providers such as Auth0, Okta, or Azure Active Directory B2C,
-and offer sign-up to users. The project includes manifest files to create
-app registrations in Azure Active Directory, including Application Roles to
-handle authorization in the SPA and the API.
-
-## Requirements to provision an instance of the system
-
-* A GitHub account
-* An Azure tenant, with an Azure subscription
-* Sufficient rights to create an app registration in the Azure tenant, and
-  owner rights on the Azure subscription (required to create the credentials
-  for the GitHub agents running the jobs, with `Contributor` role)
-* Azure CLI with Bicep extension
-
-## Deployment considerations
-The system is currently thought to be deployed in a instance of Azure App
-Service for Linux. It can be modified as desired, for example to be packed in
-Docker and published in Kubernetes or another kind of service.
-
-The project is structured to support multiple environments and deployments to
-environments using dedicated branches, and [reusable
-workflows](https://docs.github.com/en/actions/learn-github-actions/reusing-workflows):
-
-| Branch | Environment |
-| ------ | ----------- |
-| `dev`  | `dev`       |
-| `test` | `test`      |
-| `prod` | `prod`      |
-
-However, for private use it might be sufficient to provision a single instance
-of the system.
-
-## Pricing considerations
-The system is configured to use a PostgreSQL database with `Basic` pricing tier
-and `Dev/Test` pricing tier for the App Service Plan for the **DEV**
-environment, and better services for the `TEST` and `PROD` environments. Adjust
-the `Bicep` parameters files as desired, to scale up or down the services. In
-the provided configuration, these two services are those generating the bigger
-costs.
-
-## Considerations about App Registrations
-The best way to configure a Single Page Application and an API is to:
-* use two app registrations: one of the SPA, one of the API,
-* configure the SPA to be a client of the API (e.g. supporting `scopes`),
-* authenticate requests on the API using `access_token`s obtained during
-  sign-in on the SPA.
-
-However, for simplicity during the first set-up, the instructions show how
-to configure a single app registration used both by the SPA and the underlying
-API. **TODO???**
-
-## Considerations about Azure subscriptions and credentials
-It is recommended to use two Azure subscriptions: one for the non-production
-environments, one for the production environment. When using separate
-subscriptions, it is possible to configure Azure credentials for the GitHub
-Workflows having contributor role scoped for the whole subscription. This has
-the benefit that agents can create the resource groups automatically, if they
-don't exist, thus reducing the amount of operations that need to be done for
-the first time configuration.
-
-Otherwise, if Azure credentials are scoped for exact resource groups, resource
-groups must be created before generating the credentials for the GitHub agents.
-
-## How to provision an instance of the system
-
-1. Create a copy of this project, using `fork` or the `Use this template`
-   features
-2. GitHub reusable workflows require paths to a specific organization, therefore
-   update the provided `.github/workflows/infrastructure.yml`
-   and `.github/workflows/server.yml` to point to your account's name;
-   update the `uses` property of the deployment stages:
+1. Fork this project
+2. GitHub reusable workflows require paths to a specific organization,
+   therefore update the provided `.github/workflows/infrastructure.yml` and
+   `.github/workflows/server.yml` to point to your account's name; update the
+   `uses` property of the deployment stages:
 
 ```yaml
   deploy-dev:
@@ -171,41 +95,44 @@ groups must be created before generating the credentials for the GitHub agents.
    1](https://github.community/t/reusable-workflow-env-context-not-available-in-jobs-job-id-with/206111),
    [ref. 2](https://github.com/actions/runner/issues/480))
 
-1. Create Azure credentials to enable automated deployments from GitHub Workflows.
-   If you decide to use credentials scoped over exact resource groups, you will
-   need to create the resource groups before creating the credentials.
-   Using the Azure CLI
+4. Create Azure credentials to enable automated deployments from GitHub
+   Workflows, refer to this documentation for more information: <br>
+   [Deploy to App Service using GitHub
+   Actions](https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel#generate-deployment-credentials)
 
-2. Create the necessary app registrations in Azure Active Directory (examples
-   are provided below using the Azure CLI and manifests provided in this
-   repository) + Configure yourself as ADMIN!
-   + Configure the APPLICATION ID as setting!! TODO
+5. Create the necessary app registrations in Azure Active Directory. The folder
+   `infrastructure/apps` contains an example bash script that can be used to
+   create the app registrations for the API and the SPA, including application
+   roles handled by the system. Once the applications are created:
+   + Configure the API app registration to _expose an api_, and the SPA app
+     registration to use that API
+   + Refer to this documentation for more information on how to expose an API:
+     + [Quickstart: Configure an application to expose a web
+       API](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-expose-web-apis)
+     + [Quickstart: Configure a client application to access a web
+       API](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-access-web-apis)
+   + API scope and SPA client ID must be configured in the SPA's `settings.js` under `ui` folder
+   + Configure the API client ID and audience in the YAML settings of the
+     web service, under `server` folder
+     + Note: it is possible to use several `settings.$APP_ENV.yaml` files, the
+       right file is read when the application starts depending on the
+       following env variable: `APP_ENV`
 
-3. Generate secrets that will be used when configuring the PostgreSQL database:
-   these are configured as GitHub Secrets
+```yaml
+# EXAMPLE
+auth:
+  audience: api://e9ee7140-519d-458c-9621-0b3e110ea5a3
+  issuer: https://sts.windows.net/b62b317a-19c2-40c0-8650-2d9672324ac4/
+```
 
-4. Once secrets are configured in GitHub, it is possible to run the
+6. Configure GitHub secrets like described in [Configuring GitHub Actions](./docs/configuring-github-actions.md)
+
+7. Once secrets are configured in GitHub, it is possible to run the
    infrastructure pipeline, to provision the `dev` environment of the system.
-   **Run the Infrastructure deployment manually** (TODO)
+   This workflow is configured to be run manually (`workflow_dispatch`).
 
-5. Run the `Server deployment` manually (TODO)
-
-
-## Considerations regarding the separation of the SPA and the API
-The SPA and the API are completely separated in code. Meaning that they are
-developed separately (which is good) and it is possible, for example, to deploy
-the SPA in a Azure Storage static website, while having the API in a different
-service. However, for simplicity, in the provided configuration the static
-files of the SPA are served by the same web application that contains the API.
-The clear separation of SPA and API also enable configuring two app
-registrations and properly authorize web requests on the API using
-`access_token`(s). Again, to keep the "Getting started" guide simple, the
-instructions explain how to configure a single app registration having an SPA
-platform (thus representing the whole web application: SPA and API together),
-rather than having two app registrations and configuring roles.
-
-For a more advanced setup, for example to enable the scenario of a CLI that
-provides interactive sign-in and uses the same API of the SPA, it is recommended
-to configure separate app registrations and scopes, so that the interactive
-sign-in in the SPA obtains an access token for the API (rather than only an
-`id_token`).
+8. Once the Azure services are created for an environment (e.g. `dev-example-rg`),
+   it is possible to create a `GitHub` release referencing the `dev` branch to
+   trigger a deployment of the web application in the resource group.
+   In the provided configuration, the SPA is served by the same web application
+   that offers the API, this can be modified as desired.

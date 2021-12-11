@@ -1,8 +1,11 @@
 # API Server
-Project template for an API to deploy in Azure Application Service, connected
-to a PostgreSQL database from SaaS offering (Azure Database for PostgreSQL).
+This folder contains the source code of the Torino API,
 
-This project template uses onion architecture (with three main namespaces to
+The code uses dependency injection, and is designed to support PostgreSQL,
+SQLite, and Table API as persistence layers for the virtual file system. The
+persistence layer is configurable by application settings.
+
+This project uses onion architecture (with three main namespaces to
 separate front-end, business logic, and data access layers).
 
 It features OpenAPI Documentation, configuration handling, database migrations
@@ -12,7 +15,7 @@ services and the deployments of the application.
 ## Getting started
 Requirements and recommended tools:
 
-* Python 3.8
+* Python >=3.8
 * VS Code
 * Azure CLI
 

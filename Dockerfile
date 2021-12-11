@@ -36,7 +36,7 @@ COPY --from=ui_builder /home/build/ /home/app/static/
 RUN python -m venv venv && . venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 
 # create a SQLite database anyway with the right structure (thanks to Alembic)
-RUN . venv/bin/activate && DB_MIGCONNSTRING="sqlite:///./torino.db" alembic upgrade head
+RUN rm -f torino.db && . venv/bin/activate && DB_MIGCONNSTRING="sqlite:///./torino.db" alembic upgrade head
 
 FROM python:3.10.1-slim
 WORKDIR /home
@@ -48,4 +48,4 @@ RUN apt-get update && apt-get install \
     libsqlite3-dev \
     libjpeg-dev \
     zlib1g-dev
-CMD . venv/bin/activate && uvicorn server:app --port 8080 --log-level info
+CMD . venv/bin/activate && uvicorn server:app --host 0.0.0.0 --port 80 --log-level info
