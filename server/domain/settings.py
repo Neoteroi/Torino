@@ -10,7 +10,7 @@ from core.stringutils import split_pairs_eqsc
 def read_account_name_and_key(configuration: Configuration):
     if "storage_account_connection_string" in configuration:
         connstring = configuration.storage_account_connection_string
-        values = split_pairs_eqsc(connstring.lower())
+        values = dict(split_pairs_eqsc(connstring.lower()))
 
         if "accountname" in values and "accountkey" in values:
             account_name = values["accountname"]
