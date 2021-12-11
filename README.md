@@ -61,8 +61,10 @@ docker run -p 8080:80 \
   robertoprevato/torino
 ```
 
+![Demo gif](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/95ebfcac973a11991804268e1b20d37988c1fec3/torino-express-demo.gif)
+
 The system in Express mode runs without users' authentication, and can be
-immediately used to start creating containers and uploading files to the
+used immediately to start creating containers and uploading files to the
 storage. By default all information is stored in the provided Storage Account
 (Table and Blob services).
 
