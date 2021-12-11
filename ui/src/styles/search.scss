@@ -1,0 +1,35 @@
+@import "./colors.scss";
+
+.search-bar {
+  width: 30%;
+  position: relative;
+  background: $search-bar-background-color;
+  border: 1px solid $search-bar-border-color;
+  border-radius: 6px;
+
+  &:hover,
+  &:focus {
+    background-color: $search-bar-background-focus-color;
+  }
+
+  .search-icon {
+    padding: 10px 5px 5px 5px;
+    position: absolute;
+    left: 5px;
+    color: $search-icon-color;
+  }
+
+  .search-field {
+    color: white;
+    padding-top: 5px;
+    padding-left: 40px;
+    font-size: 18px;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    input {
+      font-size: 16px;
+    }
+  }
+}

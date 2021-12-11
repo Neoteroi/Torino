@@ -14,14 +14,13 @@ are not familiar with CI/CD, read the following article for an overview:
 5. Run the `server` build GitHub Workflow: this builds the application and
    deploys it to the various environments
 
-## Disclaimer
 The instructions provided here illustrate the concepts using `Bash` scripts,
 describing how to create a DEV environment in Azure: the same concepts can be
 applied to provision other environments (e.g. TEST and PROD).
 
 ### Choosing a project name
 
-The default project name for this demo is `Venezia`. To create a new deployment
+The default name of the project is `Torino`. To create a new deployment
 of this service, it is necessary to choose a different name.
 
 Since Azure provides default domains for the services, the project name must be
@@ -31,15 +30,7 @@ app service at the URL: `https://dev-example.azurewebsites.net`, if this name
 is available.
 
 The name should be set in `./infrastructure/template.bicep`, editing the
-parameter named `projectName` under `parameters`.
-
-```json
-    "projectName": {
-      "type": "string",
-      "minLength": 2,
-      "defaultValue": "venezia"
-    },
-```
+`projectName` `parameter`.
 
 ### Configuring GitHub Secrets
 
@@ -63,12 +54,13 @@ this approach is not described here (the core concepts don't vary).
 The following table lists the secrets that are required for a single `DEV`
 environment:
 
-| Secret name            | Description                                                                 |
-| ---------------------- | --------------------------------------------------------------------------- |
-| DEV_AZURE_SUBSCRIPTION | Azure subscription ID for the DEV environment.                              |
-| DEV_AZURE_CREDENTIALS  | Deployment credentials scoped for the DEV resource group.                   |
-| DEV_DB_MIGCONNSTRING   | Connection string used for database migrations.                             |
-| DEV_DBSA_PASSWORD      | DBA password used to create services in Azure (used in the ARM deployment). |
+| Secret name                 | Description                                                                 |
+| --------------------------- | --------------------------------------------------------------------------- |
+| DEV_AZURE_SUBSCRIPTION (?)  | Azure subscription ID for the DEV environment.                              |
+| DEV_AZURE_CREDENTIALS       | Deployment credentials scoped for the DEV resource group.                   |
+| DEV_DB_MIGCONNSTRING        | Connection string used for database migrations.                             |
+| DEV_DBSA_PASSWORD           | DBA password used to create services in Azure (used in the ARM deployment). |
+| DEV_API_APP_REGISTRATION_ID | App registration ID for the API.                                            |
 
 #### Generating deployment credentials
 
@@ -109,11 +101,7 @@ SUBSCRIPTION_ID="3756d039-9ddf-4efc-9eec-11dec0d9ff59"
 # subscription id can be found using `az account show`
 
 # generate deployment credentials
-az ad sp create-for-rbac \
-   --name "demoapi-gh-dev-agent" \
-   --role contributor \
-   --scopes /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RG \
-   --sdk-auth
+az ad sp create-for-rbac --name "gh-agent" --role contributor --scopes /subscriptions/$SUBSCRIPTION_ID --sdk-auth
 ```
 
 The output of the command looks like the following:

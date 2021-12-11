@@ -18,12 +18,54 @@ on:
       - ".github/workflows/server.yml"
       - "server/**"
 
-env:
-  PROJECT_NAME: trieste
-
 jobs:
+  build-ui:
+    runs-on: ubuntu-18.04
+    defaults:
+      run:
+        working-directory: ui
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 9
+          submodules: false
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.3.0"
+
+      - name: Install yarn if necessary
+        run: |
+          if ! command -v yarn; then
+              echo "Missing yarn, installing..."
+              npm install -g yarn
+          else
+              echo "Yarn is already installed."
+          fi
+
+      - name: Install dependencies
+        run: |
+          yarn install
+
+      - name: Build for production
+        run: |
+          yarn build
+
+      - name: Zip built package
+        run: |
+          cd build
+          zip -T -r ../../ui-package.zip .
+
+      - name: Upload distribution package
+        uses: actions/upload-artifact@master
+        with:
+          name: ui-package
+          path: ui-package.zip
+
   build-app:
     runs-on: ubuntu-18.04
+    needs: build-ui
     defaults:
       run:
         working-directory: server
@@ -36,6 +78,15 @@ jobs:
         with:
           fetch-depth: 9
           submodules: false
+
+      - name: Download a distribution artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ui-package
+
+      - name: Extract built SPA to the app static folder
+        run: |
+          unzip ../ui-package.zip -d app/static/
 
       - name: Use Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
@@ -73,10 +124,10 @@ jobs:
 
   deploy-dev:
     needs: build-app
-    if: github.ref == 'refs/heads/dev'
-    uses: Neoteroi/BlackSheep-Azure-API/.github/workflows/server-env.yml@dev
+    if: github.ref == 'refs/heads/dev' && github.event_name != 'pull_request'
+    uses: Neoteroi/Torino/.github/workflows/server-env.yml@dev
     with:
-      PROJECT_NAME: trieste
+      PROJECT_NAME: torino
       ENV_NAME: dev
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.DEV_AZURE_CREDENTIALS }}
@@ -84,11 +135,22 @@ jobs:
 
   deploy-test:
     needs: build-app
-    if: github.ref == 'refs/heads/test'
-    uses: Neoteroi/BlackSheep-Azure-API/.github/workflows/server-env.yml@dev
+    if: github.ref == 'refs/heads/test' && github.event_name == 'release'
+    uses: Neoteroi/Torino/.github/workflows/server-env.yml@dev
     with:
-      PROJECT_NAME: trieste
+      PROJECT_NAME: torino
       ENV_NAME: test
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.TEST_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.TEST_DBSA_PASSWORD }}
+
+  deploy-prod:
+    needs: build-app
+    if: github.ref == 'refs/heads/prod' && github.event_name == 'release'
+    uses: Neoteroi/Torino/.github/workflows/server-env.yml@dev
+    with:
+      PROJECT_NAME: torino
+      ENV_NAME: prod
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.PROD_AZURE_CREDENTIALS }}
+      DBSA_PASSWORD: ${{ secrets.PROD_DBSA_PASSWORD }}

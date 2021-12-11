@@ -15,6 +15,8 @@ on:
         required: true
       DBSA_PASSWORD:
         required: true
+      DBAPP_PASSWORD:
+        required: true
 
 jobs:
   deploy-environment-infrastructure:
@@ -44,6 +46,26 @@ jobs:
           subscriptionId: ${{ inputs.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ inputs.ENV_NAME }}-${{ inputs.PROJECT_NAME }}-rg
           template: ./infrastructure/template.bicep
-          parameters: ./infrastructure/parameters.${{ inputs.ENV_NAME }}.json projectName=${{ inputs.PROJECT_NAME }} dbAdministratorLoginPassword=${{ env.DB_PASS }}
+          parameters: ./infrastructure/parameters.${{ inputs.ENV_NAME }}.json projectName=${{ inputs.PROJECT_NAME }} dbAdministratorLoginPassword=${{ env.DB_PASS }} dbAppUserPassword=${{ env.DB_API_PASS }}
         env:
           DB_PASS: ${{ secrets.DBSA_PASSWORD }}
+          DB_API_PASS: ${{ secrets.DBAPP_PASSWORD }}
+
+      - name: Configure the application user
+        run: |
+          # create a temporary file that will include the app password
+          sed "s/@@password@@/${DB_API_PASS}/g" create-user.sql > temp-create-user.sql
+
+          DB_FULL_NAME="${{ inputs.ENV_NAME }}-${{ inputs.PROJECT_NAME }}pg"
+          DB_HOST="$DB_FULL_NAME.postgres.database.azure.com"
+
+          psql -h $DB_HOST -d ${{ inputs.PROJECT_NAME }} -U "pgsqladmin@$DB_FULL_NAME" -f temp-create-user.sql
+
+          rm -f temp-create-user.sql
+        env:
+          # postgress password is required; alternatively, you can run:
+          # `PGPASSWORD=postgres_password psql ...`
+          PGPASSWORD: ${{ secrets.DBSA_PASSWORD }}
+          DB_API_PASS: ${{ secrets.DBAPP_PASSWORD }}
+        continue-on-error: false
+        working-directory: infrastructure

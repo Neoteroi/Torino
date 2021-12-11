@@ -1,0 +1,77 @@
+i {
+  &.fa-folder {
+    color: #ffa726;
+  }
+
+  &.fa-file {
+    color: #263cff;
+  }
+}
+
+.folders-view {
+  td.icon {
+    font-size: 3rem;
+  }
+}
+
+.folders-list {
+  margin-top: 1rem !important;
+
+  list-style: none;
+  padding: 0;
+  display: flex;
+  max-width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  li {
+    display: block;
+
+    .video, .audio, .card {
+      margin: 10px;
+      border: 3px solid #fff;
+      box-shadow: 3px 3px 8px 0px rgba(0,0,0,0.3);
+      padding: 10px;
+
+      span {
+        display: block;
+      }
+    }
+
+    i.fas.fa-folder {
+      font-size: 3rem;
+      color: #ffa726;
+    }
+
+    .folder {
+      min-width: 100px;
+
+      a {
+        color: #000;
+      }
+    }
+
+    .medium-size, .thumbnail {
+      margin: 10px;
+      border: 3px solid #fff;
+      box-shadow: 3px 3px 8px 0px rgba(0,0,0,0.3);
+      max-width: 20vw;
+    }
+  }
+
+  .MuiListItem-gutters {
+    padding: 4px 0;
+  }
+}
+
+.folders-control {
+  button {
+    margin-right: 0.5rem;
+
+    &.selected {
+      color: cyan;
+      background: #122b28;
+    }
+  }
+}

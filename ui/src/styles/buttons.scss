@@ -1,0 +1,75 @@
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+button a {
+  color: white;
+  text-decoration: none;
+}
+
+a,
+a button,
+a span {
+  text-decoration: none;
+}
+
+button {
+  .fab {
+    margin-right: 10px;
+  }
+
+  &.small {
+    padding: 2px;
+    width: 30px;
+    min-width: auto;
+    border-radius: 100%;
+    border-color: #fff;
+    outline: none;
+    border: 1px solid;
+
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.buttons-area {
+  padding: 20px 0;
+
+  button {
+    margin-right: 3rem;
+    margin-bottom: 10px;
+  }
+}
+
+.table-buttons {
+  button {
+    background-color: transparent;
+    border: none;
+    color: #a4b6b7;
+  }
+}
+
+button i.fas {
+  margin-right: 10px;
+}
+
+.fake-anchor {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 1rem;
+
+  &:hover,
+  &:focus {
+    color: #000;
+  }
+}

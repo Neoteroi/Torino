@@ -1,14 +1,17 @@
 import os
 
-import app.controllers  # noqa
 from blacksheep.server.application import Application
-from blacksheepsqlalchemy import use_sqlalchemy
-from core.events import ServicesRegistrationContext
-
 from configuration.common import Configuration, ConfigurationBuilder
 from configuration.env import EnvironmentVariables
 from configuration.yaml import YAMLFile
+from domain.settings import Settings
+from essentials.folders import ensure_folder
 
+from app.controllers import *  # noqa
+from app.security.httpsmiddleware import HSTSMiddleware
+
+from .auth import configure_auth
+from .di import dependency_injection_middleware
 from .docs import docs
 from .errors import configure_error_handlers
 from .logs import configure_logging
@@ -27,22 +30,27 @@ def load_configuration() -> Configuration:
 
 def build_app() -> Application:
     configuration = load_configuration()
-    context: ServicesRegistrationContext
-    services, context, settings = configure_services(configuration)
-    configuration: Configuration
+    settings = Settings.from_configuration(load_configuration())
 
     app = Application(
-        services=services,
         show_error_details=configuration.show_error_details,
-        debug=configuration.debug,
     )
 
-    use_sqlalchemy(app, connection_string=configuration.db_connection_string)
-
-    # app.middlewares.append(dependency_injection_middleware)
-
-    configure_error_handlers(app)
+    configure_services(app, settings)
     configure_logging(app, settings)
+
+    app.middlewares.append(dependency_injection_middleware)
+
+    # Note: HTTP -> HTTPS redirection is not needed, because
+    # it is configured in the hosting service (see template.bicep httpsOnly)
+    if configuration.hsts:
+        app.middlewares.append(HSTSMiddleware())
+
+    configure_auth(app, settings)
+    configure_error_handlers(app)
+
+    ensure_folder("app/static")
+    app.serve_files("app/static", fallback_document="index.html", allow_anonymous=True)
 
     app.use_cors(
         allow_methods="*",

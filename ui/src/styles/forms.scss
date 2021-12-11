@@ -1,0 +1,140 @@
+﻿.file-input-region {
+  height: 100%;
+  position: relative;
+
+  .preloader-mask {
+    display: inline-block;
+  }
+
+  .progress-bar {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .controls {
+    button {
+      margin-right: 10px;
+    }
+  }
+
+  .main-buttons {
+    padding: 20px 0;
+    text-align: right;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .btn {
+    min-width: 100px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .summary-region {
+    margin-bottom: 20px;
+    display: flex;
+
+    .file-upload-summary {
+      margin-top: 1rem !important;
+      background: #eee;
+      min-width: 120px;
+      padding: 10px 0px;
+      border-radius: 5px;
+      margin-right: 20px;
+      overflow: hidden;
+
+      p {
+        margin: 0 20px 16px;
+      }
+
+      img {
+        max-height: 200px;
+        margin: 0 20px 10px 20px;
+      }
+    }
+  }
+}
+
+.file-input {
+  display: flex;
+  padding: 20px 0;
+  border-bottom: 1px solid #ccc;
+
+  .file-graphics {
+    margin-right: 30px;
+
+    .file-icon-wrapper {
+      min-width: 30px;
+    }
+  }
+
+  .file-info {
+    flex: 1;
+    min-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 30px;
+
+    .file-size,
+    .file-upload-progress {
+      font-size: 0.8rem;
+      color: #5a5a5a;
+      font-family: monospace;
+      display: block;
+    }
+
+    .progress {
+      margin-top: 1rem;
+    }
+  }
+}
+
+.selected-files-region {
+  margin: 0 0 30px 0;
+
+  .pagination-wrapper {
+    margin-top: 30px;
+  }
+}
+
+.custom-file-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.fileupload-buttonbar .btn,
+.fileupload-buttonbar .toggle {
+  margin-bottom: 5px;
+}
+
+.fileinput-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  -ms-filter: "alpha(opacity=0)";
+  font-size: 200px !important;
+  direction: ltr;
+  cursor: pointer;
+}
+
+.drop-zone {
+  position: absolute;
+  border: 2px dashed #aaa;
+  width: 200px;
+  height: 50%;
+  padding: 1rem;
+  width: 100%;
+  margin: 1rem 0;
+  opacity: 0.3;
+  font-style: italic;
+}

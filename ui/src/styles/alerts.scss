@@ -1,0 +1,29 @@
+.alert {
+  padding: 1rem;
+
+  h2 {
+    padding: -2px;
+    font-size: 1.2rem;
+    margin: 0 0 0 35px;
+  }
+
+  .icon-wrapper {
+    float: left;
+  }
+
+  span[title] {
+    cursor: help;
+  }
+}
+
+.ok {
+  color: green;
+}
+
+.ko {
+  color: darkred;
+}
+
+.super {
+  color: #115292;
+}

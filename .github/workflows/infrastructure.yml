@@ -11,10 +11,10 @@ on:
         description: "Deploy to TEST?"
         required: true
         default: "0"
-
-env:
-  PROJECT_NAME: trieste
-  RG_LOCATION: westeurope
+      deploy_to_prod:
+        description: "Deploy to PROD?"
+        required: true
+        default: "0"
 
 defaults:
   run:
@@ -23,22 +23,36 @@ defaults:
 jobs:
   deploy-dev:
     if: github.event.inputs.deploy_to_dev == '1' || github.ref == 'refs/heads/dev'
-    uses: Neoteroi/BlackSheep-Azure-API/.github/workflows/infrastructure-env.yml@dev
+    uses: Neoteroi/Torino/.github/workflows/infrastructure-env.yml@dev
     with:
-      PROJECT_NAME: trieste
+      PROJECT_NAME: torino
       ENV_NAME: dev
       AZURE_SUBSCRIPTION: 3756d039-9ddf-4efc-9eec-11dec0d9ff59
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.DEV_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.DEV_DBSA_PASSWORD }}
+      DBAPP_PASSWORD: ${{ secrets.DEV_DBAPP_PASSWORD }}
 
   deploy-test:
     if: github.event.inputs.deploy_to_test == '1' || github.ref == 'refs/heads/test'
-    uses: Neoteroi/BlackSheep-Azure-API/.github/workflows/infrastructure-env.yml@dev
+    uses: Neoteroi/Torino/.github/workflows/infrastructure-env.yml@dev
     with:
-      PROJECT_NAME: trieste
+      PROJECT_NAME: torino
       ENV_NAME: test
       AZURE_SUBSCRIPTION: 3756d039-9ddf-4efc-9eec-11dec0d9ff59
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.TEST_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.TEST_DBSA_PASSWORD }}
+      DBAPP_PASSWORD: ${{ secrets.TEST_DBAPP_PASSWORD }}
+
+  deploy-prod:
+    if: github.event.inputs.deploy_to_prod == '1' || github.ref == 'refs/heads/prod'
+    uses: Neoteroi/Torino/.github/workflows/infrastructure-env.yml@dev
+    with:
+      PROJECT_NAME: torino
+      ENV_NAME: prod
+      AZURE_SUBSCRIPTION: 3756d039-9ddf-4efc-9eec-11dec0d9ff59
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.PROD_AZURE_CREDENTIALS }}
+      DBSA_PASSWORD: ${{ secrets.PROD_DBSA_PASSWORD }}
+      DBAPP_PASSWORD: ${{ secrets.PROD_DBAPP_PASSWORD }}

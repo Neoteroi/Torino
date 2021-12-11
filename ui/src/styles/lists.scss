@@ -1,0 +1,96 @@
+ol li {
+  padding: 0.2rem 0;
+}
+
+dl {
+  font-size: 1.2em;
+
+  .alert {
+    margin-top: 1.5rem;
+  }
+
+  &.compact {
+    margin: 0;
+
+    dt,
+    dd {
+      padding: 0;
+    }
+
+    dt {
+      padding-top: 5px;
+    }
+  }
+
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  overflow: visible;
+
+  dt {
+    flex: 0 0 20%;
+    padding-top: 1em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border-bottom: 1px dotted #eee;
+    padding: 10px 0;
+
+    &:after {
+      content: ":";
+      display: inline;
+    }
+  }
+
+  &.no-colons {
+    dt {
+      &:after {
+        content: "";
+        display: none;
+      }
+    }
+  }
+
+  dd {
+    flex: 0 0 80%;
+    margin-left: auto;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 10px 0;
+    border-bottom: 1px dotted #eee;
+  }
+
+  input {
+    padding: 10px !important;
+
+    &.wide {
+      width: 50%;
+    }
+  }
+
+  .MuiFormControl-root.wide {
+    width: 50%;
+  }
+
+  ol {
+    margin-top: 0;
+    margin-left: 0;
+    padding-left: 1rem;
+  }
+}
+
+dd .preloader-mask.mini {
+  bottom: 12px;
+}
+
+@media (min-width: 1500px) {
+  dl {
+    dt {
+      flex: 0 0 15%;
+    }
+
+    dd {
+      flex: 0 0 85%;
+    }
+  }
+}

@@ -1,0 +1,117 @@
+.bar-contents {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-right: -40px;
+
+  > h1 {
+    padding-top: 2px;
+    margin-left: 5px;
+    margin-right: auto;
+    font-family: "Montserrat", sans-serif;
+    line-height: 1.4;
+  }
+}
+
+header {
+  padding-left: 162px;
+}
+
+.ui-menu-parent {
+  a {
+    text-decoration: none;
+  }
+
+  nav {
+    font-family: monospace;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+  }
+
+  li {
+    display: block;
+    float: left;
+    position: relative;
+    text-decoration: none;
+    transition-duration: 0.5s;
+    outline: none;
+  }
+
+  li li {
+    padding: 1rem 2rem;
+  }
+
+  span[tabindex] {
+    outline: none;
+  }
+
+  li:hover,
+  li:focus-within {
+    cursor: pointer;
+  }
+
+  li:focus-within a {
+    outline: none;
+  }
+
+  ul li ul {
+    visibility: hidden;
+    opacity: 0;
+    min-width: 5rem;
+    position: absolute;
+    transition: all 0.5s ease;
+    margin-top: 1rem;
+
+    &.anchor-left {
+      left: 0;
+    }
+
+    &.anchor-right {
+      right: 0;
+    }
+
+    display: none;
+  }
+
+  ul li:hover > ul,
+  ul li:focus-within > ul,
+  ul li ul:hover,
+  ul li ul:focus {
+    visibility: visible;
+    opacity: 1;
+    display: block;
+  }
+
+  ul li ul li {
+    clear: both;
+    width: 100%;
+  }
+
+  .dropdown > li {
+    z-index: 10000;
+  }
+}
+
+.bar-contents {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-right: -40px;
+
+  img {
+    margin-left: -8px;
+    margin-top: 2px;
+  }
+
+  > h1 {
+    padding-top: 2px;
+    margin-left: 5px;
+    font-family: "Montserrat", sans-serif;
+    line-height: 1.4;
+    display: flex;
+  }
+}

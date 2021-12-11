@@ -3,18 +3,18 @@
         "allowedMemberTypes": [
             "User"
         ],
-        "description": "Topics administrators can create and update topics.",
-        "displayName": "Topics administrator",
+        "description": "Readers can read the albums, their folders, and files.",
+        "displayName": "Reader",
         "isEnabled": true,
-        "value": "Topics:Admin"
+        "value": "READER"
     },
     {
         "allowedMemberTypes": [
             "User"
         ],
-        "description": "Regions administrators can create and update regions.",
-        "displayName": "Regions administrator",
+        "description": "Administrators can do everything in the system.",
+        "displayName": "Administrator",
         "isEnabled": true,
-        "value": "Regions:Admin"
+        "value": "ADMIN"
     }
 ]

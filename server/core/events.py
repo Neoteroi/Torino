@@ -31,16 +31,8 @@ class AsyncEventHandler:
     def append(self, handler):
         self.__handlers.append(handler)
 
-    def __call__(self, *args) -> Any:
-        if args:
-            self.__iadd__(args[0])
-            return args[0]
-
-        def decorator(fn):
-            self.__iadd__(fn)
-            return fn
-
-        return decorator
+    async def __call__(self, *args, **kwargs):
+        return await self.fire()
 
     async def fire(self):
         for handler in self.__handlers:

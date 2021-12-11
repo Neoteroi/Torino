@@ -1,6 +1,6 @@
 # App registrations
 This folder contains scripts and useful information to configure the app
-registrations in Azure, for the service.
+registrations in Azure.
 
 ## Quick reference
 

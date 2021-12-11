@@ -1,4 +1,5 @@
 import logging
+import os
 from functools import wraps
 from typing import Awaitable, Callable, Optional
 
@@ -11,7 +12,8 @@ from opencensus.trace import config_integration
 from opencensus.trace.samplers import AlwaysOnSampler
 from opencensus.trace.span import SpanKind
 from opencensus.trace.tracer import Tracer
-from logic.settings import Settings
+
+from domain.settings import Settings
 
 # configures span id
 config_integration.trace_integrations(["logging"])
@@ -35,22 +37,33 @@ def configure_logging(app: Application, settings: Settings) -> None:
     logger = logging.getLogger("blacksheep.server")
 
     logger.setLevel(logging.INFO)
-    logger.addHandler(logging.StreamHandler())
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter("%(levelname)s:     %(message)s"))
+    logger.addHandler(handler)
+
+    if not settings.monitoring_key:
+        logger.info(
+            "Application Insights is disabled, configure a "
+            "`monitoring_key` to enable the collection of telemetries."
+        )
+        return
+
+    key_setting = f"InstrumentationKey={settings.monitoring_key}"
+
+    # set an env variable that is used internally by
+    # opencensus.ext.azure.trace_exporter.AzureExporter
+    os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"] = key_setting
 
     # For telemetry sent with the Azure Monitor logs exporter, logs appear under traces.
     # Exceptions appear under exceptions.
     # So, `logger.info` are found in traces logs, `logger.exception` under exceptions
-    handler = AzureLogHandler(
-        connection_string=f"InstrumentationKey={settings.monitoring_key}"
-    )
+    handler = AzureLogHandler(connection_string=key_setting)
     handler.add_telemetry_processor(sql_alchemy_entries_by_query)
     logger.addHandler(handler)
 
     # For telemetry sent with the Azure Monitor logs exporter, logs appear under traces.
     # Exceptions appear under exceptions.
-    exporter = AzureExporter(
-        connection_string=f"InstrumentationKey={settings.monitoring_key}"
-    )
+    exporter = AzureExporter(connection_string=key_setting)
     exporter.add_telemetry_processor(sql_alchemy_entries_by_query)
     tracer = Tracer(
         exporter=exporter,

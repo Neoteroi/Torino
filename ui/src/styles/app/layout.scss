@@ -1,0 +1,161 @@
+@import "../colors.scss";
+@import "./login.scss";
+@import "./folders.scss";
+@import "./node-path.scss";
+
+.headline {
+  text-transform: uppercase;
+}
+
+#layout {
+  min-width: 320px;
+
+  > header {
+    z-index: 0;
+    border-bottom: 1px solid $header-border-bottom-color;
+  }
+
+  .main-toolbar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .drawer {
+    .MuiListItemIcon-root {
+      max-width: 40px;
+    }
+  }
+
+  .drawer > div {
+    overflow: hidden;
+  }
+
+  header,
+  main,
+  .drawer,
+  .drawer > div {
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .drawer-toggle-btn {
+    text-align: center;
+    // margin-left: 5px;
+    color: #505050;
+    padding-top: 3px;
+    height: 55px;
+
+    .MuiIconButton-edgeStart {
+      margin-left: 0;
+    }
+  }
+
+  &.ui-drawer-open {
+    > header,
+    > main {
+      padding-left: 220px;
+    }
+
+    .drawer > div {
+      width: 220px;
+    }
+  }
+
+  .MuiListItem-button {
+    min-height: 48px;
+  }
+
+  &.ui-drawer-closed {
+    #main-drawer {
+      .MuiListItemText-root {
+        display: none;
+      }
+    }
+
+    .drawer > div {
+      width: 60px;
+    }
+
+    > header,
+    > main {
+      padding-left: 60px;
+    }
+  }
+
+  #content-area {
+    h1 {
+      margin: 0 0 0.8em 0;
+    }
+  }
+
+  .region {
+    margin-top: 40px;
+    border-top: 1px dotted #dedede;
+  }
+
+  .wrapper {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .user-email-summary {
+    display: none !important;
+  }
+}
+
+@media (min-width: 600px) {
+  #layout {
+    .drawer-toggle-btn {
+      height: 64px;
+      padding-top: 8px;
+    }
+  }
+}
+
+.common-filters .preloader-mask {
+  display: none;
+}
+
+.summary .edit-view {
+  display: none;
+}
+
+.summary-text {
+  padding-bottom: 1.2rem;
+}
+
+section {
+  margin-bottom: 3rem;
+}
+
+dl.danger {
+  dt {
+    padding: 0;
+    flex: 0 0 60%;
+  }
+
+  dd {
+    flex: 0 0 20%;
+  }
+
+  .MuiCardContent-root {
+    padding: 0;
+  }
+}
+
+#main-menu {
+  a .MuiListItemText-root > span {
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+}
+
+.page {
+  margin: 1.5rem 2rem;
+
+  section {
+    margin-bottom: 3rem;
+  }
+}

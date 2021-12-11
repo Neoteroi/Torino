@@ -1,21 +1,47 @@
-# Default application settings, to run the application for local development.
+# Common application settings, used by all environments.
 #
-# These settings are read in `app.configuration.py` and can be overridden by environmental variables,
-# thanks to `essentials-configuration` package.
+# These settings are read in `app/program.py` and can be overridden by
+# environmental variables, thanks to `essentials-configuration` package.
 # Refer to https://github.com/Neoteroi/essentials-configuration for more information.
+#
+# To override settings with env variables, use the "APP_" prefix followed by the same name.
+# For example, to configure `storage_account_key` with an env variable, configure one like:
+# APP_STORAGE_ACCOUNT_KEY="******"
 #
 # The ARM templates provided with the project template configure properly the application
 # settings, so nothing more needs to be done here.
 #
-app_name: "Demo"
 
-# TODO: add to ARM template
-db_connection_string: postgresql+asyncpg://postgres:postgres@localhost:5432/apidemo
+hsts: true
 
-debug: true
+show_error_details: false
 
-show_error_details: true
+# Provide a storage account name and key; these are the only required settings
+# to use the system
+storage_account_name: ""
 
-# Replace the following with the Application Insights' instrumentation key
-# from your DEV environment, so you can see telemetries collected also when developing locally
-monitoring_key: "f0474446-331f-4e94-ad1a-9ffdeb79af09"
+storage_account_key: ""
+
+# by default, db_connection_string is not specified and the system
+# uses the Table API of the storage account for the virtual file system
+db_connection_string: ""
+
+# example of local connection string for PostgreSQL (user=webapi, pass=superpassword):
+# db_connection_string: postgresql+asyncpg://webapi:superpassword@localhost:5432/torino2
+
+# to use SQLite, use:
+# db_connection_string: sqlite+aiosqlite:///torino.db
+
+# Replace the following with an Application Insights' instrumentation key,
+# to enable collection of telemetries. The same value can be configured using
+# the environment variable APP_MONITORING_KEY
+monitoring_key: ""
+
+# To enable JWT Bearer authentication, provide audience and issuer configuration
+auth:
+  audience: ""
+  issuer: ""
+# Example of authentication for an API in Azure Active Directory:
+# auth:
+#   audience: api://e9ee7140-519d-458c-9621-0b3e110ea5a3
+#   issuer: https://sts.windows.net/b62b317a-19c2-40c0-8650-2d9672324ac4/

@@ -1,0 +1,23 @@
+.login-screen {
+  height: 100vh;
+
+  .login-image {
+    background-image: url(https://source.unsplash.com/random);
+    background-repeat: no-repeat;
+    background-color: #aaa;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .login-avatar {
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .login-form {
+    width: 100%;
+    margin-top: 8px;
+    text-align: center;
+    margin-top: 20%;
+  }
+}
