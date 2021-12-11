@@ -1,10 +1,11 @@
 from typing import List, Optional
 from uuid import UUID
 
-from data.sql.mapping import get_uuid
-from domain.albums import Album, AlbumsDataProvider
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import select
+
+from data.sql.mapping import get_uuid
+from domain.albums import Album, AlbumsDataProvider
 
 from .dbmodel import AlbumEntity
 

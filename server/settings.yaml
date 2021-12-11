@@ -22,11 +22,15 @@ storage_account_name: ""
 
 storage_account_key: ""
 
-# by default, SQLite is configured for local development
-db_connection_string: sqlite+aiosqlite:///torino.db
+# by default, db_connection_string is not specified and the system
+# uses the Table API of the storage account for the virtual file system
+db_connection_string: ""
 
-# example of local connection string for PostgreSQL:
-# db_connection_string: postgresql+asyncpg://user:superpassword@localhost:5432/torino2
+# example of local connection string for PostgreSQL (user=webapi, pass=superpassword):
+# db_connection_string: postgresql+asyncpg://webapi:superpassword@localhost:5432/torino2
+
+# to use SQLite, use:
+# db_connection_string: sqlite+aiosqlite:///torino.db
 
 # Replace the following with an Application Insights' instrumentation key,
 # to enable collection of telemetries. The same value can be configured using

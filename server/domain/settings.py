@@ -1,17 +1,20 @@
+from typing import Optional
+
 from configuration.common import Configuration
 from configuration.errors import ConfigurationError
-from core.stringutils import split_pairs_eqsc
 from pydantic import BaseModel
+
+from core.stringutils import split_pairs_eqsc
 
 
 def read_account_name_and_key(configuration: Configuration):
     if "storage_account_connection_string" in configuration:
         connstring = configuration.storage_account_connection_string
-        values = split_pairs_eqsc(connstring)
+        values = split_pairs_eqsc(connstring.lower())
 
-        if "AccountName" in values and "AccountKey" in values:
-            account_name = values["AccountName"]
-            account_key = values["AccountKey"]
+        if "accountname" in values and "accountkey" in values:
+            account_name = values["accountname"]
+            account_key = values["accountkey"]
             return account_name, account_key
         else:
             raise ConfigurationError(f"Invalid connection string: {connstring}")
@@ -31,13 +34,22 @@ def read_account_name_and_key(configuration: Configuration):
     return configuration.storage_account_name, configuration.storage_account_key
 
 
+class AuthSettings(BaseModel):
+    audience: str
+    issuer: str
+
+
 class Settings(BaseModel):
 
     storage_account_name: str
 
     storage_account_key: str
 
+    db_connection_string: str
+
     monitoring_key: str
+
+    auth: Optional[AuthSettings] = None
 
     @property
     def storage_connection_string(self) -> str:
@@ -58,5 +70,12 @@ class Settings(BaseModel):
         return cls(
             storage_account_name=account_name,
             storage_account_key=account_key,
+            db_connection_string=configuration.db_connection_string or "",
             monitoring_key=configuration.monitoring_key,
+            auth=AuthSettings(
+                audience=configuration.auth.audience or "",
+                issuer=configuration.auth.issuer or "",
+            )
+            if "auth" in configuration
+            else None,
         )

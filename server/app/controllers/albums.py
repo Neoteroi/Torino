@@ -7,14 +7,8 @@ from blacksheep.server.controllers import ApiController, get, post
 
 from app.decorators.cachecontrol import cache_control
 from domain import Roles
-from domain.albums import (
-    Album,
-    AlbumsHandler,
-    ContainerReadAuthContext,
-    CreateAlbumInput,
-    DownloadURL,
-    UpdateAlbumInput,
-)
+from domain.albums import (Album, AlbumsHandler, ContainerReadAuthContext,
+                           CreateAlbumInput, DownloadURL, UpdateAlbumInput)
 from domain.vfs import FileSystemNode
 
 

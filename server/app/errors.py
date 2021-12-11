@@ -6,16 +6,13 @@ from typing import Any
 from blacksheep import Request, Response
 from blacksheep.server.application import Application
 from blacksheep.server.responses import json, text
-from core.errors import AcceptedExceptionWithData, ConflictError, PreconfitionFailed
-from essentials.exceptions import (
-    AcceptedException,
-    ForbiddenException,
-    InvalidArgument,
-    NotImplementedException,
-    ObjectNotFound,
-    UnauthorizedException,
-)
+from essentials.exceptions import (AcceptedException, ForbiddenException,
+                                   InvalidArgument, NotImplementedException,
+                                   ObjectNotFound, UnauthorizedException)
 from sqlalchemy.exc import IntegrityError
+
+from core.errors import (AcceptedExceptionWithData, ConflictError,
+                         PreconfitionFailed)
 
 
 def configure_error_handlers(app: Application) -> None:
