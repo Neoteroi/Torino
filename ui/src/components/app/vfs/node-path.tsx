@@ -74,10 +74,13 @@ export default class NodePath extends Component<NodePathProps, NodePathState> {
   }
 
   shouldDisplayEllipsis(): boolean {
+    const {albumId} = this.props;
     const {path} = this.state;
     return (
       path.length > 0 &&
-      path.find((item) => item.parent_id === null) === undefined
+      path.find(
+        (item) => item.parent_id === null || item.parent_id == albumId
+      ) === undefined
     );
   }
 
