@@ -1,10 +1,8 @@
-from dateutil.parser import parse
 from typing import List, Optional
 from uuid import UUID
 
 from azure.data.tables.aio import TableServiceClient
-from essentials.exceptions import ObjectNotFound
-
+from dateutil.parser import parse
 from domain.vfs import (
     FileImageData,
     FileSystemDataProvider,
@@ -12,6 +10,9 @@ from domain.vfs import (
     FileSystemNodePathFragment,
     FileSystemNodeType,
 )
+from essentials.exceptions import ObjectNotFound
+
+from .logs import log_table_dep
 
 
 def entity_to_image_data(entity: dict) -> Optional[FileImageData]:
@@ -21,9 +22,9 @@ def entity_to_image_data(entity: dict) -> Optional[FileImageData]:
         return None
     return FileImageData(
         medium_image_name=medium_image_name,
-        small_image_name=entity.get("SmallImageName"),
-        image_width=int(entity.get("ImageWidth")),
-        image_height=int(entity.get("ImageHeight")),
+        small_image_name=entity.get("SmallImageName", ""),
+        image_width=int(entity.get("ImageWidth", -1)),
+        image_height=int(entity.get("ImageHeight", -1)),
     )
 
 
@@ -84,6 +85,7 @@ class TableAPIFileSystemDataProvider(FileSystemDataProvider):
         super().__init__()
         self.table_client = table_service_client.get_table_client(self.table_name)
 
+    @log_table_dep()
     async def get_album_nodes(self, album_id: UUID) -> List[FileSystemNode]:
         items: List[FileSystemNode] = []
         async for entity in self.table_client.query_entities(
@@ -92,6 +94,7 @@ class TableAPIFileSystemDataProvider(FileSystemDataProvider):
             items.append(entity_to_node(entity))
         return items
 
+    @log_table_dep()
     async def get_node(
         self, node_id: UUID, include_children: bool
     ) -> Optional[FileSystemNode]:
@@ -108,6 +111,7 @@ class TableAPIFileSystemDataProvider(FileSystemDataProvider):
 
         return node
 
+    @log_table_dep()
     async def get_node_children(self, node_id: UUID) -> List[FileSystemNode]:
         items: List[FileSystemNode] = []
         async for entity in self.table_client.query_entities(
@@ -116,6 +120,7 @@ class TableAPIFileSystemDataProvider(FileSystemDataProvider):
             items.append(entity_to_node(entity))
         return items
 
+    @log_table_dep()
     async def get_node_path(self, node_id: UUID) -> List[FileSystemNodePathFragment]:
         items: List[FileSystemNodePathFragment] = []
         node = await self.get_node(node_id, False)
@@ -132,6 +137,9 @@ class TableAPIFileSystemDataProvider(FileSystemDataProvider):
         )
 
         for _ in range(3):
+            if node is None or node.parent_id is None:
+                break
+
             node = await self.get_node(node.parent_id, False)
 
             if node is None:
@@ -148,10 +156,12 @@ class TableAPIFileSystemDataProvider(FileSystemDataProvider):
         items.reverse()
         return items
 
+    @log_table_dep()
     async def create_nodes(self, nodes: List[FileSystemNode]) -> None:
         operations = [("create", node_to_entity(node)) for node in nodes]
         await self.table_client.submit_transaction(operations)
 
+    @log_table_dep()
     async def update_nodes(self, nodes: List[FileSystemNode]) -> None:
         # Since nodes have Partition Key == Parent ID, which enables
         # fast reads, here we cannot simply update; we also need to
@@ -179,10 +189,14 @@ class TableAPIFileSystemDataProvider(FileSystemDataProvider):
             operations = [("delete", node_to_entity(node)) for node in to_delete]
             await self.table_client.submit_transaction(operations)
 
+    @log_table_dep()
     async def delete_nodes(self, nodes_ids: List[UUID]) -> None:
         nodes: List[FileSystemNode] = []
         for node_id in nodes_ids:
-            nodes.append(await self.get_node(node_id, False))
+            node = await self.get_node(node_id, False)
+
+            if node is not None:
+                nodes.append(node)
 
         operations = [
             ("delete", node_to_entity(node)) for node in nodes if node is not None

@@ -54,7 +54,7 @@ class FileSystemNode:
 @dataclass
 class FileSystemNodePathFragment:
     id: UUID
-    parent_id: UUID
+    parent_id: Optional[UUID]
     name: str
 
 

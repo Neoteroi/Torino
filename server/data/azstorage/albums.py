@@ -5,6 +5,7 @@ from typing import Optional, List
 from uuid import UUID
 from domain.albums import Album, AlbumsDataProvider
 from azure.data.tables.aio import TableServiceClient
+from .logs import log_table_dep
 
 
 def album_to_entity(album: Album) -> dict:
@@ -46,6 +47,7 @@ class TableAPIAlbumsDataProvider(AlbumsDataProvider):
         super().__init__()
         self.table_client = table_service_client.get_table_client(self.table_name)
 
+    @log_table_dep()
     async def get_album(self, album_id: UUID) -> Optional[Album]:
         key = str(album_id)
         try:
@@ -54,16 +56,19 @@ class TableAPIAlbumsDataProvider(AlbumsDataProvider):
         except ResourceNotFoundError:
             return None
 
+    @log_table_dep()
     async def get_albums(self) -> List[Album]:
         results: List[Album] = []
         async for entity in self.table_client.list_entities():
             results.append(entity_to_album(entity))
         return results
 
+    @log_table_dep()
     async def create_album(self, data: Album) -> None:
         # TODO: we should insert more than one entity here,
         # to support indexing by storage_id, slug
         await self.table_client.create_entity(entity=album_to_entity(data))
 
+    @log_table_dep()
     async def update_album(self, data: Album) -> None:
         await self.table_client.update_entity(entity=album_to_entity(data))

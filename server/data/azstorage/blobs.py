@@ -1,18 +1,21 @@
 import urllib.parse
 from datetime import datetime, timedelta
-from functools import partial
 from typing import List, cast
 
 from azure.core.exceptions import ResourceExistsError
-from azure.storage.blob import (BlobSasPermissions, BlobServiceClient,
-                                ContainerSasPermissions, generate_blob_sas,
-                                generate_container_sas)
+from azure.storage.blob import (
+    BlobSasPermissions,
+    BlobServiceClient,
+    ContainerSasPermissions,
+    generate_blob_sas,
+    generate_container_sas,
+)
 
 from core.errors import ConflictError
 from core.pools import PoolClient
 from domain.blobs import BlobsService, Container
-from domain.logs import log_dep
 from domain.settings import Settings
+from .logs import log_blob_dep
 
 
 def _list_containers(blob_client: BlobServiceClient) -> List[Container]:
@@ -31,20 +34,17 @@ def _create_container(blob_client: BlobServiceClient, name: str) -> None:
         raise ConflictError("A container with the given name already exists")
 
 
-log_az_dep = partial(log_dep, "AzureStorage")
-
-
 class AzureStorageBlobsService(BlobsService, PoolClient):
     def __init__(self, blob_client: BlobServiceClient, settings: Settings) -> None:
         super().__init__()
         self.blob_client = blob_client
         self.settings = settings
 
-    @log_az_dep()
+    @log_blob_dep()
     async def get_containers(self) -> List[Container]:
         return await self.run(_list_containers, self.blob_client)
 
-    @log_az_dep()
+    @log_blob_dep()
     async def create_container(self, name: str) -> None:
         return await self.run(_create_container, self.blob_client, name)
 
