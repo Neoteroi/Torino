@@ -60,6 +60,10 @@ for pushing changes and for build agents to pick up jobs).
 | PostgreSQL           | Managed instance of Azure Database for PostgreSQL.                                                                                                                                                      |
 | Storage Account      | Service that, for example, can be used to store files (Blob Service), or NoSQL tabular data (Table Service).                                                                                            |
 
+The system is designed to support storing information for the virtual file
+system in the Table Service of the Storage Account, therefore it is possible to
+remove PostgreSQL to reduce the cost of the solution considerably.
+
 ---
 
 ## Deployments considerations
@@ -96,19 +100,3 @@ parameters files for TEST and PROD to know which settings impact on pricing.
 
 * [Deploy ARM templates by using GitHub Actions](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-github-actions)
 * [Python web app on Azure](https://github.com/Azure/actions-workflow-samples/blob/master/AppService/python-webapp-on-azure.yml)
-
-## TODOs
-
-> Note: Azure ARM templates for dbs generally allow to
-> configure the dba password. It is recommended to improve the ARM template and
-> release pipeline to automatically configure a user with lower privileges for
-> the application server. Most examples for Azure don't include this important
-> feature (e.g. see https://github.com/Azure/azure-quickstart-templates).
-
-* Configure a DB user for the application server with limited privileges
-* Enable slots, depending on the App Service Plan SKU (e.g. the DEV environment
-  can use a cheaper service that doesn`t support staging slots, while TEST and
-  PROD environments should support this). Improve the deployment of the app
-  server to use staging slots and
-* Configure alerts for Application Insights
-* Configure health check for Application Insights
