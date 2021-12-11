@@ -4,10 +4,8 @@ consisting of:
 
 * a back-end API that provides the necessary features to
   handle storage containers and a virtual file system
-* a front-end Single Page Application that provides
-  an administrative interface to configure containers, upload files,
-  navigate through the virtual file system files, and also
-  interactive sign-in through Azure Active Directory
+* a front-end SPA that provides an administrative interface to configure
+  containers, upload files, navigate through the virtual file system
 
 Using this project is possible to provision a private media storage in Azure,
 in a few minutes. :sparkles: :cake:
@@ -24,8 +22,8 @@ Torino provides two working modes: **Express** and **Normal**.
 The project is a work-in-progress and by no mean complete. However, Torino is
 ready for use and provides complex features:
 
-* Ability to run a Docker container, requiring only a Storage Account (Express
-  mode)
+* Ability to run the application in a Docker container, requiring only a
+  Storage Account (Express mode)
 * A single page application front-end built using modern technologies:
   TypeScript, HTML5, SASS, React; offering folders view, features to
   display pictures, play MP3s and videos
@@ -51,8 +49,7 @@ modified and enhanced with the desided features.
 
 # Express mode
 
-The fastest way to try Torino in Express mode is using the provided Docker
-image:
+The fastest way to try Torino is using the provided Docker image:
 
 ```bash
 docker run -p 8080:80 \
@@ -62,6 +59,12 @@ docker run -p 8080:80 \
 ```
 
 ![Demo gif](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/95ebfcac973a11991804268e1b20d37988c1fec3/torino-express-demo.gif)
+
+This requires using an existing Storage Account, which must enable CORS (either
+from all origins, or the specific origin used when starting the container).
+**Important** CORS must be enabled for the Blob Service, under `Settings > Resource sharing (CORS)`.
+
+![CORS enabled](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/ee5c1fe26bb8ca9c028de36a7d2c1a37f171b1ee/storage-cors-enabled.png)
 
 The system in Express mode runs without users' authentication, and can be
 used immediately to start creating containers and uploading files to the
