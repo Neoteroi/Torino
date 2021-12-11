@@ -136,3 +136,5 @@ auth:
    trigger a deployment of the web application in the resource group.
    In the provided configuration, the SPA is served by the same web application
    that offers the API, this can be modified as desired.
+
+---
