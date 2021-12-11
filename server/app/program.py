@@ -4,12 +4,11 @@ from blacksheep.server.application import Application
 from configuration.common import Configuration, ConfigurationBuilder
 from configuration.env import EnvironmentVariables
 from configuration.yaml import YAMLFile
+from domain.settings import Settings
 from essentials.folders import ensure_folder
 
-import app.controllers  # noqa
+from app.controllers import *  # noqa
 from app.security.httpsmiddleware import HSTSMiddleware
-from core.events import ServicesRegistrationContext
-from domain.settings import Settings
 
 from .auth import configure_auth
 from .di import dependency_injection_middleware
@@ -32,18 +31,13 @@ def load_configuration() -> Configuration:
 def build_app() -> Application:
     configuration = load_configuration()
     settings = Settings.from_configuration(load_configuration())
-    context: ServicesRegistrationContext
 
     app = Application(
         show_error_details=configuration.show_error_details,
     )
 
-    context = configure_services(app, settings)
-
+    configure_services(app, settings)
     configure_logging(app, settings)
-
-    app.on_start += context.initialize
-    app.on_stop += context.dispose
 
     app.middlewares.append(dependency_injection_middleware)
 
