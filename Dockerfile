@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install make \
     zlib1g-dev \
     wget
 ADD ./server /home
-RUN mkdir /home/app/static
+RUN mkdir -p /home/app/static
 COPY --from=ui_builder /home/build/ /home/app/static/
 RUN python -m venv venv && . venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 
