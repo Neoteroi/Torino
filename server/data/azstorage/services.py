@@ -1,5 +1,3 @@
-import asyncio
-import aiohttp
 from core.events import ServicesRegistrationContext
 from azure.storage.blob import BlobServiceClient
 from azure.data.tables.aio import TableServiceClient
@@ -45,38 +43,23 @@ def use_storage_table(
 
     Some features in the future will be supported only if a SQL db is used.
     """
-    aiohttp_client_session = None
+    table_service_client = None
 
     # initialize:
-    # * configure the aiohttp client session, this needs to happen in the
-    #   startup event
+    # * configure the table service
     # * creating tables if they don't exist
     async def initialize_tables():
-        nonlocal aiohttp_client_session
-        jar = aiohttp.DummyCookieJar()
-        aiohttp_client_session = aiohttp.ClientSession(
-            loop=asyncio.get_event_loop(),
-            trust_env=True,
-            cookie_jar=jar,
-            auto_decompress=False,
-        )
+        nonlocal table_service_client
         table_service_client = TableServiceClient.from_connection_string(
-            conn_str=settings.storage_connection_string, session=aiohttp_client_session
+            conn_str=settings.storage_connection_string
         )
 
         container.add_instance(table_service_client)
 
-        async with table_service_client:
-            await table_service_client.create_table_if_not_exists(
-                TableAPIAlbumsDataProvider.table_name
-            )
-            await table_service_client.create_table_if_not_exists(
-                TableAPIFileSystemDataProvider.table_name
-            )
+        await table_service_client.__aenter__()
 
     async def dispose_client():
-        nonlocal aiohttp_client_session
-        await aiohttp_client_session.close()
+        await table_service_client.__aexit__()
 
     context.initialize += initialize_tables
     context.dispose += dispose_client
