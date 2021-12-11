@@ -18,8 +18,7 @@
     },
     "extensions": {
         "recommendations": [
-            "ms-python.python",
-            "irongeek.vscode-env"
+            "ms-python.python"
         ]
     }
 }
