@@ -3,9 +3,3 @@
 hsts: false
 
 show_error_details: true
-
-# example of local connection string for PostgreSQL:
-# db_connection_string: postgresql+asyncpg://webapi:superpassword@localhost:5432/torino2
-
-# by default, SQLite is configured for local development
-db_connection_string: sqlite+aiosqlite:///torino.db

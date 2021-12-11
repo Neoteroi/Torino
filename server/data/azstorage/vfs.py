@@ -153,8 +153,31 @@ class TableAPIFileSystemDataProvider(FileSystemDataProvider):
         await self.table_client.submit_transaction(operations)
 
     async def update_nodes(self, nodes: List[FileSystemNode]) -> None:
+        # Since nodes have Partition Key == Parent ID, which enables
+        # fast reads, here we cannot simply update; we also need to
+        # delete the previous nodes, if their parent id changed.
+        # Therefore here we are optimizing for reads, trading off performance
+        # when updating nodes. This seems reasonable because reads are done
+        # more often than updates.
+        # The opposite scenario would require not querying children by PK,
+        # thus would cause a worse performance for reads.
+        existing_nodes = [await self.get_node(node.id, False) for node in nodes]
+        existing_nodes = [node for node in existing_nodes if node]
+        to_delete: List[FileSystemNode] = []
+
+        for node in nodes:
+            corresponding_node = next(
+                (item for item in existing_nodes if item.id == node.id), None
+            )
+            if corresponding_node and corresponding_node.parent_id != node.parent_id:
+                to_delete.append(corresponding_node)
+
         operations = [("upsert", node_to_entity(node)) for node in nodes]
         await self.table_client.submit_transaction(operations)
+
+        if to_delete:
+            operations = [("delete", node_to_entity(node)) for node in to_delete]
+            await self.table_client.submit_transaction(operations)
 
     async def delete_nodes(self, nodes_ids: List[UUID]) -> None:
         nodes: List[FileSystemNode] = []
