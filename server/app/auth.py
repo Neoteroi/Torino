@@ -35,12 +35,10 @@ class RoleRequirement(Requirement):
             context.succeed(self)
 
 
-def _auth_is_configured(settings: Settings) -> bool:
-    return settings.auth is not None and settings.auth.audience and settings.auth.issuer
-
-
 def configure_auth(app: Application, settings: Settings) -> None:
-    if not _auth_is_configured(settings):
+    if settings.auth is None or (
+        not settings.auth.audience or not settings.auth.issuer
+    ):
         logger.info(
             "Auth logic is disabled, configure the `auth` section "
             "to enable authentication and authorization."
