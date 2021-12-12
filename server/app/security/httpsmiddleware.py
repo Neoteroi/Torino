@@ -27,5 +27,5 @@ class HSTSMiddleware:
 
     async def __call__(self, request: Request, handler):
         response: Response = await handler(request)
-        response.headers.add(b"Strict-Transport-Security", f"".encode())
+        response.headers.add(b"Strict-Transport-Security", self._value)
         return response

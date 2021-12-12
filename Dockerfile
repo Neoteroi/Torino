@@ -35,12 +35,14 @@ RUN mkdir -p /home/app/static
 COPY --from=ui_builder /home/build/ /home/app/static/
 RUN python -m venv venv && . venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 
-# create a SQLite database anyway with the right structure (thanks to Alembic)
+# Create a SQLite database anyway with the right structure (thanks to Alembic)
 RUN rm -f torino.db && . venv/bin/activate && DB_MIGCONNSTRING="sqlite:///./torino.db" alembic upgrade head
 
 FROM python:3.10.1-slim
 WORKDIR /home
 COPY --from=server_builder /home/ /home/
+# By default, set the app environment to be "local"
+ENV APP_ENV=local
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 RUN apt-get update && apt-get install \
     ca-certificates \
