@@ -124,7 +124,7 @@ jobs:
 
   deploy-dev:
     needs: build-app
-    if: github.ref == 'refs/heads/dev' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/dev' && github.event_name == 'release'
     uses: Neoteroi/Torino/.github/workflows/server-env.yml@dev
     with:
       PROJECT_NAME: torino
