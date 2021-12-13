@@ -30,7 +30,7 @@ export async function loadData<T, U extends ILoaderViewInterface>(
       error: undefined,
     });
     return data;
-  } catch (error) {
+  } catch (error: any) {
     component.setState({
       loading: false,
       error,

@@ -90,7 +90,7 @@ export default class TextInput extends Component<
           });
           return false;
         }
-      } catch (error) {
+      } catch (error: any) {
         this.setState({
           valueError: true,
           valueHelperText: "Validation failed",

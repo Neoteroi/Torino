@@ -79,7 +79,7 @@ export default class FileUpload extends Component<
       });
 
       fileInfo = await filesService.uploadFile(file.htmlFile, data, this);
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof UserCancelledOperation) {
         // nothing wrong
         this.setState({
@@ -112,7 +112,7 @@ export default class FileUpload extends Component<
             file_mime: fileInfo.file_type,
           },
         ]);
-      } catch (error) {
+      } catch (error: any) {
         if (error instanceof ConflictError) {
           // duplicate file name -
           // TODO: let the user rename the file?

@@ -350,7 +350,7 @@ export default class FoldersPage extends Component<
       this.setState({
         loading: false,
       });
-    } catch (error) {
+    } catch (error: any) {
       this.setState({
         loading: false,
         operationError: error,

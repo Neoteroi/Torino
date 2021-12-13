@@ -67,7 +67,7 @@ export default class RenameNodeForm extends Component<
       });
 
       this.props.onUpdated(data);
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof ConflictError) {
         this.nameField.current?.setError(
           "An item already exists with this name"

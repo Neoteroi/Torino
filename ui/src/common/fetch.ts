@@ -153,7 +153,7 @@ export async function getOptional<T>(
       },
       addAuth
     );
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof NotFoundError) {
       return null;
     }

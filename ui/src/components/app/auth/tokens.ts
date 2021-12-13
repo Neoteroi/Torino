@@ -29,7 +29,7 @@ export function userFromAccessToken(token: string | null): User | null {
   try {
     const jwt = JwtDecode<JwtToken>(token);
     return new User(jwt);
-  } catch (error) {
+  } catch (error: any) {
     // eslint-disable-next-line no-console
     console.error(error);
 
@@ -54,7 +54,7 @@ export async function userFromCachedAccessToken(
     }
 
     return new User(jwt);
-  } catch (error) {
+  } catch (error: any) {
     // eslint-disable-next-line no-console
     console.error(error);
 

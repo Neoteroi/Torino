@@ -67,7 +67,7 @@ export default class NewNodeForm extends Component<
       ]);
 
       this.props.onCreated(data[0]);
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof ConflictError) {
         this.nameField.current?.setError(
           "A folder already exists with this name"
