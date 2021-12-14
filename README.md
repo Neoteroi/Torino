@@ -89,6 +89,9 @@ Azure Storage Table API, add the following variable:
 -e APP_DB_CONNECTION_STRING="sqlite+aiosqlite:///torino.db"
 ```
 
+For more information about running the system this way, refer to the dedicated
+[Wiki page](https://github.com/Neoteroi/Torino/wiki/Express-mode).
+
 # Normal mode
 
 Using the system in Normal mode provides the full set of features implemented
