@@ -46,7 +46,7 @@ ready for use and provides complex features:
 * Database migrations handled using Alembic, and ORM provided by SQLAlchemy
   (uses code-first and has built-in support for PostgreSQL and SQLite)
 * As alternative to the SQL relational dbs mentioned above, it can be configured
-  to use a Table API (Storage Account is tested, but it should also support CosmosDB)
+  to use the Table API of the same Storage Account that is used for blobs
 
 Since the project is open source and includes automation, it can be easily
 modified and enhanced with the desided features.
