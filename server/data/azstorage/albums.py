@@ -1,10 +1,11 @@
-from azure.core.exceptions import (
-    ResourceNotFoundError,
-)
-from typing import Optional, List
+from typing import List, Optional
 from uuid import UUID
-from domain.albums import Album, AlbumsDataProvider
+
+from azure.core.exceptions import ResourceNotFoundError
 from azure.data.tables.aio import TableServiceClient
+
+from domain.albums import Album, AlbumsDataProvider
+
 from .logs import log_table_dep
 
 

@@ -3,6 +3,8 @@ from uuid import UUID
 
 from azure.data.tables.aio import TableServiceClient
 from dateutil.parser import parse
+from essentials.exceptions import ObjectNotFound
+
 from domain.vfs import (
     FileImageData,
     FileSystemDataProvider,
@@ -10,7 +12,6 @@ from domain.vfs import (
     FileSystemNodePathFragment,
     FileSystemNodeType,
 )
-from essentials.exceptions import ObjectNotFound
 
 from .logs import log_table_dep
 

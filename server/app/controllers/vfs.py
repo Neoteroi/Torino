@@ -3,12 +3,16 @@ from uuid import UUID
 
 from blacksheep import Response
 from blacksheep.server.bindings import FromJSON
-from blacksheep.server.controllers import (ApiController, delete, get, patch,
-                                           post)
+from blacksheep.server.controllers import ApiController, delete, get, patch, post
 
-from domain.vfs import (CopyOperationInput, CreateNodeInput, FileSystemHandler,
-                        FileSystemNode, FileSystemNodePathFragment,
-                        UpdateNodeInput)
+from domain.vfs import (
+    CopyOperationInput,
+    CreateNodeInput,
+    FileSystemHandler,
+    FileSystemNode,
+    FileSystemNodePathFragment,
+    UpdateNodeInput,
+)
 
 
 class VirtualFileSystemController(ApiController):

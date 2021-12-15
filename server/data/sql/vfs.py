@@ -6,8 +6,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import text
 from sqlalchemy.sql.expression import delete, select
 
-from domain.vfs import (FileImageData, FileSystemDataProvider, FileSystemNode,
-                        FileSystemNodePathFragment, FileSystemNodeType)
+from domain.vfs import (
+    FileImageData,
+    FileSystemDataProvider,
+    FileSystemNode,
+    FileSystemNodePathFragment,
+    FileSystemNodeType,
+)
 
 from .dbmodel import NodeEntity
 from .mapping import get_uuid, map_optional_uuid

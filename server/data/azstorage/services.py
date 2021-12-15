@@ -1,8 +1,8 @@
-from core.events import ServicesRegistrationContext
-from azure.storage.blob import BlobServiceClient
 from azure.data.tables.aio import TableServiceClient
+from azure.storage.blob import BlobServiceClient
 from rodi import Container
 
+from core.events import ServicesRegistrationContext
 from domain.albums import AlbumsDataProvider
 from domain.blobs import BlobsService
 from domain.settings import Settings

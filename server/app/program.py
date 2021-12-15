@@ -4,11 +4,11 @@ from blacksheep.server.application import Application
 from configuration.common import Configuration, ConfigurationBuilder
 from configuration.env import EnvironmentVariables
 from configuration.yaml import YAMLFile
-from domain.settings import Settings
 from essentials.folders import ensure_folder
 
 from app.controllers import *  # noqa
 from app.security.httpsmiddleware import HSTSMiddleware
+from domain.settings import Settings
 
 from .auth import configure_auth
 from .di import dependency_injection_middleware
