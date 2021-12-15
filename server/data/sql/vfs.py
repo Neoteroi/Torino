@@ -91,7 +91,7 @@ class SQLFileSystemDataProvider(FileSystemDataProvider):
                 select(NodeEntity)
                 .where(
                     (NodeEntity.album_id == str(album_id))
-                    & (NodeEntity.parent_id == None)
+                    & (NodeEntity.parent_id == None)  # noqa
                 )
                 .order_by(NodeEntity.name)  # type: ignore
             )
@@ -198,7 +198,9 @@ class SQLFileSystemDataProvider(FileSystemDataProvider):
 
     async def create_nodes(self, nodes: List[FileSystemNode]) -> None:
         async with self.session:
-            self.session.add_all([node_to_node_entity(node) for node in nodes])  # type: ignore
+            self.session.add_all(  # type: ignore
+                [node_to_node_entity(node) for node in nodes]
+            )
             await self.session.commit()
 
     async def update_nodes(self, nodes: List[FileSystemNode]) -> None:

@@ -4,9 +4,7 @@ from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.orm import registry, relationship  # type: ignore
 from sqlalchemy.sql import expression
-from sqlalchemy.types import DateTime
 
-# from sqlalchemy.dialects.postgresql import UUID
 from data.sql.uuid import UUID
 
 mapper_registry = registry()

@@ -9,9 +9,6 @@ app.on_start += context.initialize
 """
 
 
-from typing import Any
-
-
 class AsyncEventHandler:
     def __init__(self, context):
         self.__handlers = []
