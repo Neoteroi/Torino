@@ -112,6 +112,12 @@ jobs:
         run: |
           pytest tests/
 
+      - name: Run linters
+        run: |
+          flake8 app core data domain tests
+          black --check app core data domain tests
+          isort --check-only app core data domain tests
+
       - name: Archive Release
         run: |
           zip -T -r ../release.zip . -x "venv/*" "__pycache__/*" "**/__pycache__/*" ".mypy_cache/*" ".pytest_cache/*" "deps/*" @
