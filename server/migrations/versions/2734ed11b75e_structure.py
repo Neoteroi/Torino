@@ -46,6 +46,11 @@ def upgrade():
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("name"),
     )
+
+    op.execute(
+        "INSERT INTO storages(id, name, type, key_secret_id) VALUES ('00000000-0000-0000-0000-000000000000', 'Default', 'Azure Storage Account', '');"
+    )
+
     op.create_table(
         "albums",
         sa.Column("id", UUID(), nullable=False),
