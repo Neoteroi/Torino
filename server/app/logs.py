@@ -23,7 +23,6 @@ config_integration.trace_integrations(["logging"])
 # See:
 # https://github.com/census-instrumentation/opencensus-python/issues/1037
 # https://docs.microsoft.com/en-us/azure/azure-monitor/app/api-filtering-sampling#opencensus-python-telemetry-processors
-# Callback function to append '_hello' to each log message telemetry
 def sql_alchemy_entries_by_query(envelope):
     if envelope.data.baseData.get("name") == "sqlalchemy.query":
         envelope.data.baseData["type"] = "SQLAlchemy"
