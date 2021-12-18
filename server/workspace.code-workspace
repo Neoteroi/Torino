@@ -7,9 +7,6 @@
             "path": "../infrastructure"
         },
         {
-            "path": "../docs"
-        },
-        {
             "path": "../.github"
         }
     ],

@@ -154,7 +154,7 @@ auth:
   issuer: https://sts.windows.net/b62b317a-19c2-40c0-8650-2d9672324ac4/
 ```
 
-6. Configure GitHub secrets like described in [Configuring GitHub Actions](./docs/configuring-github-actions.md)
+6. Configure GitHub secrets like described in [Configuring GitHub Actions](https://github.com/Neoteroi/Torino/wiki/Configuring-GitHub-Actions)
 
 7. Once secrets are configured in GitHub, it is possible to run the
    infrastructure pipeline, to provision the `dev` environment of the system.
