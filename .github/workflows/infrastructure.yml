@@ -2,19 +2,6 @@ name: Deploy infrastructure
 
 on:
   workflow_dispatch:
-    inputs:
-      deploy_to_dev:
-        description: "Deploy to DEV?"
-        required: true
-        default: "1"
-      deploy_to_test:
-        description: "Deploy to TEST?"
-        required: true
-        default: "0"
-      deploy_to_prod:
-        description: "Deploy to PROD?"
-        required: true
-        default: "0"
 
 defaults:
   run:
@@ -22,7 +9,7 @@ defaults:
 
 jobs:
   deploy-dev:
-    if: github.event.inputs.deploy_to_dev == '1' || github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/dev'
     uses: Neoteroi/Torino/.github/workflows/infrastructure-env.yml@dev
     with:
       PROJECT_NAME: torino
@@ -34,7 +21,7 @@ jobs:
       DBAPP_PASSWORD: ${{ secrets.DEV_DBAPP_PASSWORD }}
 
   deploy-test:
-    if: github.event.inputs.deploy_to_test == '1' || github.ref == 'refs/heads/test'
+    if: github.ref == 'refs/heads/test'
     uses: Neoteroi/Torino/.github/workflows/infrastructure-env.yml@dev
     with:
       PROJECT_NAME: torino
@@ -46,7 +33,7 @@ jobs:
       DBAPP_PASSWORD: ${{ secrets.TEST_DBAPP_PASSWORD }}
 
   deploy-prod:
-    if: github.event.inputs.deploy_to_prod == '1' || github.ref == 'refs/heads/prod'
+    if: github.ref == 'refs/heads/prod'
     uses: Neoteroi/Torino/.github/workflows/infrastructure-env.yml@dev
     with:
       PROJECT_NAME: torino

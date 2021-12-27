@@ -1,8 +1,8 @@
-@description('App registration client id.')
-param appClientId string = '00000000-0000-0000-0000-000000000000'
+@description('Audience used for JWT Bearer validation.')
+param appAuthAudience string = ''
 
-@description('Tenant ID.')
-param tenantId string = '00000000-0000-0000-0000-000000000000'
+@description('Issuer used for JWT Bearer validation.')
+param appAuthIssuer string = ''
 
 @minLength(2)
 param projectName string = 'demo'
@@ -200,9 +200,6 @@ resource storageAccountWebContainer 'Microsoft.Storage/storageAccounts/blobServi
   properties: {
     publicAccess: 'None'
   }
-  dependsOn: [
-    storageAccount
-  ]
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
@@ -244,18 +241,6 @@ resource alertsActionGroup 'microsoft.insights/actionGroups@2019-06-01' = {
   }
 }
 
-module alertsModule 'alerts.bicep' = {
-  name: 'deployAlerts'
-  dependsOn: [
-    appIns
-  ]
-  params: {
-    projectName: projectName
-    environment: environment
-    actionGroupName: actionGroupName
-  }
-}
-
 resource projectSite 'Microsoft.Web/sites@2020-06-01' = {
   name: projectFullName
   location: location
@@ -274,6 +259,19 @@ resource projectSite 'Microsoft.Web/sites@2020-06-01' = {
     storageAccount
     appIns
   ]
+}
+
+module alertsModule 'alerts.bicep' = {
+  name: 'deployAlerts'
+  dependsOn: [
+    appIns
+    projectSite
+  ]
+  params: {
+    projectName: projectName
+    environment: environment
+    actionGroupName: actionGroupName
+  }
 }
 
 resource projectSiteConnectionStrings 'Microsoft.Web/sites/config@2015-08-01' = {
@@ -299,8 +297,8 @@ resource projectSiteAppSettings 'Microsoft.Web/sites/config@2015-08-01' = {
   properties: {
     SCM_DO_BUILD_DURING_DEPLOYMENT: 'true'
     APP_SHOW_ERROR_DETAILS: 'false'
-    APP_CLIENT_ID: appClientId
-    APP_TENANT_ID: tenantId
+    APP__AUTH__AUDIENCE: appAuthAudience
+    APP__AUTH__ISSUER: appAuthIssuer
     APP_ENV: environment
     APP_STORAGE_ACCOUNT_NAME: storageAccountFullName
     APP_STORAGE_ACCOUNT_KEY: listKeys(storageAccountFullName, '2015-05-01-preview').key1

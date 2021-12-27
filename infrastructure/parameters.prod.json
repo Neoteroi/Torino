@@ -2,8 +2,11 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "appClientId": {
-      "value": "00000000-0000-0000-0000-000000000000"
+    "appAuthAudience": {
+      "value": ""
+    },
+    "appAuthIssuer": {
+      "value": ""
     },
     "environment": {
       "value": "prod"
