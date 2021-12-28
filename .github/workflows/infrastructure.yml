@@ -12,34 +12,34 @@ jobs:
     if: github.ref == 'refs/heads/dev'
     uses: Neoteroi/Torino/.github/workflows/infrastructure-env.yml@dev
     with:
-      PROJECT_NAME: torino
       ENV_NAME: dev
-      AZURE_SUBSCRIPTION: 3756d039-9ddf-4efc-9eec-11dec0d9ff59
     secrets:
+      AZURE_SUBSCRIPTION: ${{ secrets.DEV_AZURE_SUBSCRIPTION }}
       AZURE_CREDENTIALS: ${{ secrets.DEV_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.DEV_DBSA_PASSWORD }}
       DBAPP_PASSWORD: ${{ secrets.DEV_DBAPP_PASSWORD }}
+      PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
 
   deploy-test:
     if: github.ref == 'refs/heads/test'
     uses: Neoteroi/Torino/.github/workflows/infrastructure-env.yml@dev
     with:
-      PROJECT_NAME: torino
       ENV_NAME: test
-      AZURE_SUBSCRIPTION: 3756d039-9ddf-4efc-9eec-11dec0d9ff59
     secrets:
+      AZURE_SUBSCRIPTION: ${{ secrets.TEST_AZURE_SUBSCRIPTION }}
       AZURE_CREDENTIALS: ${{ secrets.TEST_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.TEST_DBSA_PASSWORD }}
       DBAPP_PASSWORD: ${{ secrets.TEST_DBAPP_PASSWORD }}
+      PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
 
   deploy-prod:
     if: github.ref == 'refs/heads/prod'
     uses: Neoteroi/Torino/.github/workflows/infrastructure-env.yml@dev
     with:
-      PROJECT_NAME: torino
       ENV_NAME: prod
-      AZURE_SUBSCRIPTION: 3756d039-9ddf-4efc-9eec-11dec0d9ff59
     secrets:
+      AZURE_SUBSCRIPTION: ${{ secrets.PROD_AZURE_SUBSCRIPTION }}
       AZURE_CREDENTIALS: ${{ secrets.PROD_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.PROD_DBSA_PASSWORD }}
       DBAPP_PASSWORD: ${{ secrets.PROD_DBAPP_PASSWORD }}
+      PROJECT_NAME: ${{ secrets.PROJECT_NAME }}

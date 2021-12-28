@@ -1,13 +1,12 @@
 on:
   workflow_call:
     inputs:
-      PROJECT_NAME:
-        required: true
-        type: string
       ENV_NAME:
         required: true
         type: string
     secrets:
+      PROJECT_NAME:
+        required: true
       AZURE_CREDENTIALS:
         required: true
       DBSA_PASSWORD:
@@ -51,7 +50,7 @@ jobs:
           DB_NAME="$ENV-${PROJECT_NAME}pg"
           DB_MIGCONNSTRING="postgresql+psycopg2://pgsqladmin@$DB_NAME:$DBSA_PASSWORD@$DB_NAME.postgres.database.azure.com:5432/$PROJECT_NAME" alembic upgrade head
         env:
-          PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+          PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
           DBSA_PASSWORD: ${{ secrets.DBSA_PASSWORD }}
 
       - name: Download a distribution artifact
@@ -65,6 +64,6 @@ jobs:
 
       - uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ inputs.ENV_NAME }}-${{ inputs.PROJECT_NAME }}
+          app-name: ${{ inputs.ENV_NAME }}-${{ secrets.PROJECT_NAME }}
           package: release.zip
           startup-command: "gunicorn --bind=0.0.0.0 --workers=4 -k uvicorn.workers.UvicornWorker server:app"

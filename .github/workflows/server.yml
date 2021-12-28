@@ -133,30 +133,30 @@ jobs:
     if: github.ref == 'refs/heads/dev' && github.event_name == 'release'
     uses: Neoteroi/Torino/.github/workflows/server-env.yml@dev
     with:
-      PROJECT_NAME: torino
       ENV_NAME: dev
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.DEV_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.DEV_DBSA_PASSWORD }}
+      PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
 
   deploy-test:
     needs: build-app
     if: github.ref == 'refs/heads/test' && github.event_name == 'release'
     uses: Neoteroi/Torino/.github/workflows/server-env.yml@dev
     with:
-      PROJECT_NAME: torino
       ENV_NAME: test
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.TEST_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.TEST_DBSA_PASSWORD }}
+      PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
 
   deploy-prod:
     needs: build-app
     if: github.ref == 'refs/heads/prod' && github.event_name == 'release'
     uses: Neoteroi/Torino/.github/workflows/server-env.yml@dev
     with:
-      PROJECT_NAME: torino
       ENV_NAME: prod
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.PROD_AZURE_CREDENTIALS }}
       DBSA_PASSWORD: ${{ secrets.PROD_DBSA_PASSWORD }}
+      PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
