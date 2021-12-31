@@ -100,3 +100,17 @@ parameters files for TEST and PROD to know which settings impact on pricing.
 
 * [Deploy ARM templates by using GitHub Actions](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-github-actions)
 * [Python web app on Azure](https://github.com/Azure/actions-workflow-samples/blob/master/AppService/python-webapp-on-azure.yml)
+
+
+## To deploy from the local environment:
+
+```bash
+az login
+az account set --subscription "<YOUR_SUB_NAME>"
+
+ENV="dev"
+PROJECT_NAME="asyouwish"
+RG="dev-$PROJECT_NAME-rg"
+
+az deployment group create --resource-group $RG --parameters @parameters.$ENV.json --parameters projectName=$PROJECT_NAME dbAdministratorLoginPassword=$DB_PASS dbAppUserPassword=$DB_APP_PASS --template-file template.bicep
+```
